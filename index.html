@@ -1,0 +1,953 @@
+<!doctype html>
+<title>รพ.กลุ่มเสี่ยงขาดดุล 2569</title>
+<style>
+  :root{
+    --navy:#1F4E78;
+    --navy-deep:#153A59;
+    --navy-ink:#15314A;
+    --navy-tint:#EAF1F8;
+    --navy-tint-2:#D9E6F2;
+    --red:#C00000;
+    --red-tint:#FBE6E6;
+    --orange:#E07B22;
+    --orange-tint:#FDEBDA;
+    --yellow:#D9A200;
+    --yellow-tint:#FBF2D8;
+    --ink:#1C2B39;
+    --ink-soft:#4F6475;
+    --ink-faint:#7C8CA0;
+    --line:#D7E2EB;
+    --paper:#FFFFFF;
+    --canvas:#E7ECF1;
+    --w1:#8FB0CC;
+    --w2:#5F8CAE;
+    --w3:#366B93;
+    --w4:#1F4E78;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:"Sarabun","Noto Sans Thai",sans-serif;
+  }
+
+  .stage{
+    overflow-x:auto;
+    padding:32px 0;
+    display:flex;
+    justify-content:center;
+  }
+
+  .poster{
+    width:1080px;
+    flex-shrink:0;
+    background:var(--paper);
+    box-shadow:0 18px 46px rgba(21,49,74,.16), 0 2px 8px rgba(21,49,74,.08);
+  }
+
+  .pad{ padding:0 56px; }
+
+  /* ---------- header ---------- */
+  .header{
+    background:linear-gradient(165deg,var(--navy-deep),var(--navy) 72%);
+    color:#fff;
+    padding:40px 56px 70px;
+    position:relative;
+  }
+  .kicker{
+    font-family:"Prompt",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.09em;
+    color:#AFC7DD;
+    text-transform:uppercase;
+    margin:0 0 10px;
+  }
+  .title{
+    font-family:"Prompt",sans-serif;
+    font-weight:700;
+    font-size:33px;
+    line-height:1.28;
+    margin:0 0 6px;
+    text-wrap:balance;
+  }
+  .subtitle{
+    font-family:"Prompt",sans-serif;
+    font-weight:500;
+    font-size:17px;
+    color:#CFE0EF;
+    margin:0 0 16px;
+  }
+  .meta-line{
+    font-size:14.5px;
+    color:#DCE9F4;
+    line-height:1.6;
+    margin:0;
+    border-top:1px solid rgba(255,255,255,.22);
+    padding-top:14px;
+    max-width:720px;
+  }
+  .meta-line b{ color:#fff; font-weight:600; }
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:0 56px;
+    margin-top:-46px;
+    position:relative;
+    z-index:2;
+  }
+  .stat-tile{
+    background:var(--paper);
+    border-radius:4px;
+    padding:20px 24px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    box-shadow:0 10px 24px rgba(21,49,74,.14);
+    border-bottom:4px solid var(--red);
+  }
+  .stat-tile.neutral{ border-bottom-color:var(--navy); }
+  .stat-num{
+    font-family:"Prompt",sans-serif;
+    font-weight:800;
+    font-size:46px;
+    line-height:1;
+    color:var(--red);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .stat-tile.neutral .stat-num{ color:var(--navy); }
+  .stat-label{
+    font-size:14.5px;
+    line-height:1.4;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .stat-label b{ color:var(--ink); }
+
+  /* ---------- sections ---------- */
+  section{ padding:34px 56px 0; }
+  section.last{ padding-bottom:30px; }
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .sec-title{
+    font-family:"Prompt",sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:var(--navy-ink);
+    margin:0;
+  }
+  .sec-sub{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .rule{
+    height:1px;
+    background:var(--line);
+    margin:30px 56px 0;
+  }
+
+  /* ---------- criteria cards ---------- */
+  .criteria-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+  .crit-card{
+    background:var(--navy-tint);
+    border-radius:3px;
+    padding:16px 15px 17px;
+    border-top:5px solid var(--w1);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .crit-card[data-w="2"]{ border-top-color:var(--w2); }
+  .crit-card[data-w="3"]{ border-top-color:var(--w3); }
+  .crit-card[data-w="4"]{ border-top-color:var(--w4); background:#E4EDF5; }
+  .crit-top{ display:flex; align-items:center; justify-content:space-between; }
+  .crit-icon{ color:var(--navy); }
+  .crit-weight{
+    font-family:"Prompt",sans-serif;
+    font-size:11px;
+    font-weight:600;
+    color:#fff;
+    background:var(--w1);
+    border-radius:20px;
+    padding:2px 9px;
+    white-space:nowrap;
+  }
+  .crit-card[data-w="2"] .crit-weight{ background:var(--w2); }
+  .crit-card[data-w="3"] .crit-weight{ background:var(--w3); }
+  .crit-card[data-w="4"] .crit-weight{ background:var(--w4); }
+  .crit-label{
+    font-family:"Prompt",sans-serif;
+    font-size:14px;
+    font-weight:700;
+    color:var(--navy-ink);
+    margin:0;
+  }
+  .crit-text{
+    font-size:12.8px;
+    line-height:1.48;
+    color:var(--ink-soft);
+    margin:0;
+    flex-grow:1;
+  }
+  .crit-count{
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+    border-top:1px solid rgba(31,78,120,.14);
+    padding-top:9px;
+  }
+  .crit-count b{
+    font-family:"Prompt",sans-serif;
+    font-size:25px;
+    font-weight:800;
+    color:var(--navy-ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .crit-count span{ font-size:12.5px; color:var(--ink-soft); }
+
+  /* ---------- scoring flow ---------- */
+  .flow{
+    display:grid;
+    grid-template-columns:1fr auto 1fr auto 1.15fr;
+    align-items:stretch;
+    gap:0 10px;
+  }
+  .flow-step{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:15px 16px;
+  }
+  .flow-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--navy);
+    color:#fff;
+    font-family:"Prompt",sans-serif;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:9px;
+  }
+  .flow-step h4{
+    font-family:"Prompt",sans-serif;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--navy-ink);
+    margin:0 0 9px;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    font-family:"Prompt",sans-serif;
+    font-size:11.5px;
+    font-weight:600;
+    background:var(--navy-tint);
+    color:var(--navy-ink);
+    border-radius:20px;
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+  .flow-step p{ font-size:12.3px; line-height:1.55; color:var(--ink-soft); margin:0 0 8px; }
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    color:var(--ink-faint);
+  }
+  .example-box{
+    margin-top:10px;
+    background:var(--navy-ink);
+    color:#fff;
+    border-radius:3px;
+    padding:11px 13px;
+    font-family:"Prompt",sans-serif;
+    font-size:12.5px;
+    font-weight:500;
+    line-height:1.55;
+  }
+  .example-box b{ color:#FFD88A; font-weight:700; }
+
+  /* ---------- facility table ---------- */
+  .bar-legend{
+    display:flex;
+    gap:18px;
+    margin-bottom:14px;
+    font-size:12.3px;
+    color:var(--ink-soft);
+  }
+  .bar-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:10px;height:10px;border-radius:2px;display:inline-block; }
+
+  .table-wrap{ overflow-x:auto; }
+  .data-table{
+    width:968px;
+    border-collapse:collapse;
+    table-layout:fixed;
+  }
+  .data-table col.c-rank{ width:30px; }
+  .data-table col.c-prov{ width:84px; }
+  .data-table col.c-code{ width:58px; }
+  .data-table col.c-name{ width:300px; }
+  .data-table col.c-sev{ width:34px; }
+  .data-table col.c-crit{ width:76px; }
+  .data-table col.c-team{ width:64px; }
+  .data-table col.c-lvl{ width:42px; }
+  .data-table col.c-bed{ width:44px; }
+  .data-table col.c-own{ width:50px; }
+  .data-table col.c-name-wide{ width:550px; }
+
+  .filter-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 20px;
+    flex-wrap:wrap;
+  }
+  .filter-spacer{ flex:1; }
+  .export-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family:"Prompt",sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:#fff;
+    background:var(--navy-ink);
+    border:1px solid var(--navy-ink);
+    border-radius:20px;
+    padding:6px 16px 6px 14px;
+    cursor:pointer;
+  }
+  .export-btn:hover{ background:var(--navy); }
+  .export-btn:disabled{ opacity:.6; cursor:default; }
+  .export-btn:focus-visible{ outline:2px solid var(--navy); outline-offset:2px; }
+  .filter-label{ font-size:13px; color:var(--ink-soft); font-weight:600; font-family:"Prompt",sans-serif; }
+  .filter-btn{
+    font-family:"Prompt",sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--navy);
+    background:var(--navy-tint);
+    border:1px solid var(--navy-tint-2);
+    border-radius:20px;
+    padding:6px 16px;
+    cursor:pointer;
+  }
+  .filter-btn:hover{ background:var(--navy-tint-2); }
+  .filter-btn.active{ background:var(--navy); color:#fff; border-color:var(--navy); }
+  .filter-btn:focus-visible{ outline:2px solid var(--navy); outline-offset:2px; }
+
+  .team-section{ margin-bottom:22px; }
+  .team-section:last-child{ margin-bottom:0; }
+  .team-sec-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    background:var(--navy-ink);
+    color:#fff;
+    padding:8px 12px;
+    border-radius:3px 3px 0 0;
+  }
+  .team-sec-name{ font-family:"Prompt",sans-serif; font-weight:700; font-size:14px; }
+  .team-sec-count{ font-size:12px; color:#C7D7E5; font-variant-numeric:tabular-nums; }
+  .team-section .data-table{ border:1px solid var(--line); border-top:none; }
+
+  .data-table thead th{
+    font-family:"Prompt",sans-serif;
+    font-size:11px;
+    font-weight:600;
+    color:#fff;
+    background:var(--navy);
+    text-align:left;
+    padding:7px 8px;
+    line-height:1.25;
+    position:sticky;
+    top:0;
+  }
+  .data-table thead th.num{ text-align:right; }
+  .data-table thead th.ctr{ text-align:center; }
+
+  .data-table tbody td{
+    font-size:12px;
+    color:var(--ink);
+    padding:4.5px 8px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    vertical-align:middle;
+  }
+  .data-table tbody tr:nth-child(even){ background:#F6F9FB; }
+  .data-table td.rank-cell{
+    font-family:"Prompt",sans-serif;
+    font-weight:700;
+    color:var(--ink-faint);
+    text-align:center;
+  }
+  .data-table td.name-cell{ font-weight:600; white-space:normal; }
+  .data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  .data-table td.ctr{ text-align:center; }
+  .data-table td.pass{ color:var(--ink-faint); text-align:center; }
+  .sev-chip{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;height:20px;
+    border-radius:3px;
+    font-family:"Prompt",sans-serif;
+    font-weight:700;
+    font-size:11px;
+    color:#fff;
+  }
+  tr.sev-3 td:first-child{ box-shadow:inset 3px 0 0 var(--red); }
+  tr.sev-2 td:first-child{ box-shadow:inset 3px 0 0 var(--orange); }
+  tr.sev-1 td:first-child{ box-shadow:inset 3px 0 0 var(--yellow); }
+  .crit-pills{ display:flex; gap:3px; flex-wrap:wrap; }
+  .pill{
+    width:16px;height:16px;
+    border-radius:3px;
+    font-size:9.5px;
+    font-weight:700;
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Prompt",sans-serif;
+    background:var(--navy);
+    flex-shrink:0;
+  }
+  .foot-note{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    margin:10px 0 0;
+  }
+
+  /* ---------- team diagram ---------- */
+  .team-wrap{ position:relative; width:968px; height:296px; }
+  .team-box{
+    position:absolute;
+    width:420px; height:110px;
+    background:var(--navy-tint);
+    border:1px solid var(--navy-tint-2);
+    border-radius:3px;
+    padding:14px 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+  }
+  .team-box.b1{ left:0;   top:0; }
+  .team-box.b2{ left:548px; top:0; }
+  .team-box.b3{ left:548px; top:186px; }
+  .team-box.b4{ left:0;   top:186px; }
+  .team-name{
+    font-family:"Prompt",sans-serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--navy-ink);
+  }
+  .team-count{ font-size:13px; color:var(--ink-soft); }
+  .team-count b{ color:var(--red); font-weight:700; }
+  .team-scope{ font-size:12px; color:var(--ink-faint); }
+  .team-badges{ display:flex; gap:5px; margin-top:3px; }
+  .hub{
+    position:absolute;
+    left:484px; top:148px;
+    transform:translate(-50%,-50%);
+    width:64px;height:64px;
+    border-radius:50%;
+    background:var(--navy);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    z-index:2;
+  }
+  .level-tag{
+    font-family:"Prompt",sans-serif;
+    font-size:10.5px;
+    font-weight:600;
+    background:#fff;
+    border:1px solid var(--navy-tint-2);
+    color:var(--navy);
+    border-radius:20px;
+    padding:2px 8px;
+  }
+  .team-svg{ position:absolute; inset:0; }
+  .team-caption{
+    font-size:12.3px;
+    color:var(--ink-soft);
+    margin:14px 0 0;
+    line-height:1.55;
+  }
+
+  /* ---------- observations ---------- */
+  .obs-list{ display:flex; flex-direction:column; gap:10px; }
+  .obs-item{
+    display:flex;
+    gap:12px;
+    background:var(--red-tint);
+    border-radius:3px;
+    padding:12px 15px;
+  }
+  .obs-item .obs-icon{ color:var(--red); flex-shrink:0; margin-top:1px; }
+  .obs-item p{ margin:0; font-size:13px; line-height:1.55; color:var(--ink); }
+  .obs-item b{ color:var(--navy-ink); }
+
+  /* ---------- footer ---------- */
+  .footer{
+    padding:20px 56px 30px;
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+    align-items:flex-end;
+  }
+  .footer .src{ font-size:11.5px; color:var(--ink-faint); line-height:1.6; max-width:560px; }
+  .footer .note{
+    font-family:"Prompt",sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--navy);
+    background:var(--navy-tint);
+    border-radius:3px;
+    padding:9px 14px;
+    text-align:right;
+    white-space:nowrap;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<div class="stage">
+  <div class="poster">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+      <p class="kicker">เขตสุขภาพที่ 1 · ปีงบประมาณ 2569</p>
+      <h1 class="title">คัดกรองโรงพยาบาลกลุ่มเสี่ยงแผนขาดดุล</h1>
+      <p class="subtitle">เขตสุขภาพที่ 1 (ปีงบประมาณ 2569)</p>
+      <p class="meta-line">ตรวจสอบ <b>103 หน่วยบริการ</b> | ข้อมูล Planfin ณ <b>9–10 ต.ค. 2569</b> และ 7 Risk Scoring ณ <b>ก.ย. 2569</b></p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-tile">
+        <span class="stat-num">55</span>
+        <span class="stat-label">แห่ง <b>เข้าเกณฑ์อย่างน้อย 1 ข้อ</b><br>จาก 4 เกณฑ์คัดกรอง</span>
+      </div>
+      <div class="stat-tile neutral">
+        <span class="stat-num">0</span>
+        <span class="stat-label">แห่ง เข้าครบทั้ง 4 ข้อ —<br><b>ไม่มี รพ. ใดเข้าเกณฑ์ครบทุกข้อ</b></span>
+      </div>
+    </div>
+
+    <!-- ===== 2. CRITERIA ===== -->
+    <section>
+      <div class="sec-head">
+        <h2 class="sec-title">เกณฑ์คัดกรอง 4 ข้อ</h2>
+        <p class="sec-sub">เข้าเกณฑ์ข้อใดข้อหนึ่งหรือหลายข้อ ถือเป็นกลุ่มเป้าหมาย</p>
+      </div>
+      <div class="criteria-grid">
+
+        <div class="crit-card" data-w="1">
+          <div class="crit-top">
+            <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.3"/><path d="M8.2 10.6 12 7l3.8 3.6M8.2 13.4 12 17l3.8-3.6"/></svg>
+            <span class="crit-weight">น้ำหนัก 1</span>
+          </div>
+          <p class="crit-label">เกณฑ์ที่ 1</p>
+          <p class="crit-text">ผล Planfin ปี 69 เทียบแผน คลาดเคลื่อนเกิน ±5% ทั้งด้านรายได้และค่าใช้จ่าย</p>
+          <div class="crit-count"><b>22</b><span>แห่ง</span></div>
+        </div>
+
+        <div class="crit-card" data-w="2">
+          <div class="crit-top">
+            <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 10 13l3-3 7 7.5"/><path d="M15.5 17.5H20v-4.5"/></svg>
+            <span class="crit-weight">น้ำหนัก 2</span>
+          </div>
+          <p class="crit-label">เกณฑ์ที่ 2</p>
+          <p class="crit-text">EBITDA ผลดำเนินงานจริง เดือน ก.ย. 69 ติดลบ</p>
+          <div class="crit-count"><b>16</b><span>แห่ง</span></div>
+        </div>
+
+        <div class="crit-card" data-w="3">
+          <div class="crit-top">
+            <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="1.4"/><path d="M4 9.3h16M8 3v4M16 3v4"/><path d="M9.3 16.3h5.4M12 13.6v5.4"/></svg>
+            <span class="crit-weight">น้ำหนัก 3</span>
+          </div>
+          <p class="crit-label">เกณฑ์ที่ 3</p>
+          <p class="crit-text">แผน EBITDA ปี 70 ที่ยื่นไว้ ติดลบ (วางแผนขาดดุลล่วงหน้า)</p>
+          <div class="crit-count"><b>14</b><span>แห่ง</span></div>
+        </div>
+
+        <div class="crit-card" data-w="4">
+          <div class="crit-top">
+            <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
+            <span class="crit-weight">น้ำหนัก 4</span>
+          </div>
+          <p class="crit-label">เกณฑ์ที่ 4</p>
+          <p class="crit-text">ระดับวิกฤตทางการเงิน 6–7 ณ เดือน ก.ย. 69</p>
+          <div class="crit-count"><b>23</b><span>แห่ง</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="rule"></div>
+
+    <!-- ===== 3. SCORING METHOD ===== -->
+    <section>
+      <div class="sec-head">
+        <h2 class="sec-title">วิธีให้คะแนนเพื่อจัดลำดับ</h2>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="flow-num">1</span>
+          <h4>ให้น้ำหนักตามความรุนแรง</h4>
+          <div class="chip-row">
+            <span class="chip">ข้อ 4 = 4 คะแนน</span>
+            <span class="chip">ข้อ 3 = 3 คะแนน</span>
+            <span class="chip">ข้อ 2 = 2 คะแนน</span>
+            <span class="chip">ข้อ 1 = 1 คะแนน</span>
+          </div>
+        </div>
+        <div class="flow-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-step">
+          <span class="flow-num">2</span>
+          <h4>คูณตัวคูณเมื่อเข้าหลายเกณฑ์</h4>
+          <div class="chip-row">
+            <span class="chip">4+3 ×1.6</span>
+            <span class="chip">4+2 ×1.5</span>
+            <span class="chip">4+1 ×1.4</span>
+            <span class="chip">3+2 ×1.3</span>
+            <span class="chip">3+1 ×1.2</span>
+            <span class="chip">2+1 ×1.1</span>
+          </div>
+        </div>
+        <div class="flow-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-step">
+          <span class="flow-num">3</span>
+          <h4>รวมคะแนน และจัดลำดับ</h4>
+          <p>คะแนนรวม = ผลรวมน้ำหนัก × ตัวคูณ (คูณตัวคูณของทุกคู่เกณฑ์ที่เข้า) · เท่ากัน→ดูจำนวนข้อก่อน→Risk Scoring สูงกว่าอยู่ก่อน</p>
+          <div class="example-box">ตัวอย่าง เข้าข้อ <b>1, 3, 4</b> → น้ำหนัก 8 × ตัวคูณ 2.69 = <b>21.5 คะแนน</b></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rule"></div>
+
+    <!-- ===== 4. FULL LIST (grouped by team) ===== -->
+    <section>
+      <div class="sec-head">
+        <h2 class="sec-title">รายชื่อหน่วยบริการที่เข้าเกณฑ์ (55 แห่ง)</h2>
+        <p class="sec-sub">จัดกลุ่มตามทีมตรวจ · เรียงตามคะแนน: น้ำหนักข้อ 4&gt;3&gt;2&gt;1 × ตัวคูณเมื่อเข้าหลายเกณฑ์</p>
+      </div>
+      <div class="bar-legend">
+        <span><i class="dot" style="background:var(--red)"></i>เข้า 3 ข้อ</span>
+        <span><i class="dot" style="background:var(--orange)"></i>เข้า 2 ข้อ</span>
+        <span><i class="dot" style="background:var(--yellow)"></i>เข้า 1 ข้อ</span>
+      </div>
+      <div class="filter-bar">
+        <span class="filter-label">แสดง:</span>
+        <button class="filter-btn" type="button" data-n="20">20 แห่ง</button>
+        <button class="filter-btn" type="button" data-n="30">30 แห่ง</button>
+        <button class="filter-btn" type="button" data-n="40">40 แห่ง</button>
+        <button class="filter-btn active" type="button" data-n="55">ทั้งหมด (55)</button>
+        <span class="filter-spacer"></span>
+        <button class="export-btn" type="button" id="exportBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+          Export to Excel
+        </button>
+      </div>
+
+      <!-- ทีมเชียงใหม่ -->
+      <div class="team-section" data-total="14">
+        <div class="team-sec-head"><span class="team-sec-name">ทีมเชียงใหม่</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
+            <thead><tr><th>ลำดับ</th><th>จังหวัด</th><th>รหัส</th><th>ชื่อหน่วยบริการ</th><th class="ctr">จำนวน<br>ที่เข้า</th><th>เกณฑ์ที่เข้า</th><th class="ctr">ระดับ</th><th class="num">เตียง</th></tr></thead>
+            <tbody>
+              <tr class="sev-3" data-rank="3"><td class="rank-cell">3</td><td>น่าน</td><td>11181</td><td class="name-cell">โรงพยาบาลสันติสุข</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">20</td></tr>
+              <tr class="sev-2" data-rank="9"><td class="rank-cell">9</td><td>แม่ฮ่องสอน</td><td>11205</td><td class="name-cell">โรงพยาบาลแม่สะเรียง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">M2</td><td class="num">96</td></tr>
+              <tr class="sev-2" data-rank="13"><td class="rank-cell">13</td><td>ลำพูน</td><td>11142</td><td class="name-cell">โรงพยาบาลลี้</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">99</td></tr>
+              <tr class="sev-1" data-rank="15"><td class="rank-cell">15</td><td>น่าน</td><td>11177</td><td class="name-cell">โรงพยาบาลเวียงสา</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">78</td></tr>
+              <tr class="sev-1" data-rank="17"><td class="rank-cell">17</td><td>ลำปาง</td><td>11147</td><td class="name-cell">โรงพยาบาลเกาะคา</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">M1</td><td class="num">152</td></tr>
+              <tr class="sev-2" data-rank="25"><td class="rank-cell">25</td><td>พะเยา</td><td>40744</td><td class="name-cell">โรงพยาบาลภูซาง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i></span></td><td class="ctr">F3</td><td class="num">15</td></tr>
+              <tr class="sev-1" data-rank="30"><td class="rank-cell">30</td><td>แม่ฮ่องสอน</td><td>11206</td><td class="name-cell">โรงพยาบาลแม่ลาน้อย</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">F2</td><td class="num">34</td></tr>
+              <tr class="sev-1" data-rank="31"><td class="rank-cell">31</td><td>แม่ฮ่องสอน</td><td>10719</td><td class="name-cell">โรงพยาบาลศรีสังวาลย์</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">S</td><td class="num">154</td></tr>
+              <tr class="sev-1" data-rank="32"><td class="rank-cell">32</td><td>พะเยา</td><td>11188</td><td class="name-cell">โรงพยาบาลแม่ใจ</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="34"><td class="rank-cell">34</td><td>พะเยา</td><td>11184</td><td class="name-cell">โรงพยาบาลจุน</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F2</td><td class="num">32</td></tr>
+              <tr class="sev-1" data-rank="35"><td class="rank-cell">35</td><td>เชียงราย</td><td>15012</td><td class="name-cell">โรงพยาบาลสมเด็จพระญาณสังวร</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F1</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="45"><td class="rank-cell">45</td><td>พะเยา</td><td>11185</td><td class="name-cell">โรงพยาบาลเชียงม่วน</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="46"><td class="rank-cell">46</td><td>ลำปาง</td><td>11153</td><td class="name-cell">โรงพยาบาลแม่พริก</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">16</td></tr>
+              <tr class="sev-1" data-rank="51"><td class="rank-cell">51</td><td>แพร่</td><td>11172</td><td class="name-cell">โรงพยาบาลหนองม่วงไข่</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">32</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ทีมลำปาง -->
+      <div class="team-section" data-total="13">
+        <div class="team-sec-head"><span class="team-sec-name">ทีมลำปาง</span><span class="team-sec-count">แสดง 13 จาก 13 แห่ง</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
+            <thead><tr><th>ลำดับ</th><th>จังหวัด</th><th>รหัส</th><th>ชื่อหน่วยบริการ</th><th class="ctr">จำนวน<br>ที่เข้า</th><th>เกณฑ์ที่เข้า</th><th class="ctr">ระดับ</th><th class="num">เตียง</th></tr></thead>
+            <tbody>
+              <tr class="sev-3" data-rank="4"><td class="rank-cell">4</td><td>เชียงราย</td><td>11198</td><td class="name-cell">โรงพยาบาลเวียงแก่น</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">46</td></tr>
+              <tr class="sev-3" data-rank="10"><td class="rank-cell">10</td><td>ลำพูน</td><td>11140</td><td class="name-cell">โรงพยาบาลแม่ทา</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">3</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-2" data-rank="12"><td class="rank-cell">12</td><td>ลำพูน</td><td>11141</td><td class="name-cell">โรงพยาบาลบ้านโฮ่ง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-2" data-rank="14"><td class="rank-cell">14</td><td>ลำพูน</td><td>11144</td><td class="name-cell">โรงพยาบาลป่าซาง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">M2</td><td class="num">75</td></tr>
+              <tr class="sev-1" data-rank="20"><td class="rank-cell">20</td><td>ลำพูน</td><td>24956</td><td class="name-cell">โรงพยาบาลเวียงหนองล่อง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">16</td></tr>
+              <tr class="sev-1" data-rank="26"><td class="rank-cell">26</td><td>แม่ฮ่องสอน</td><td>11204</td><td class="name-cell">โรงพยาบาลปาย</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">F1</td><td class="num">58</td></tr>
+              <tr class="sev-1" data-rank="27"><td class="rank-cell">27</td><td>ลำพูน</td><td>11143</td><td class="name-cell">โรงพยาบาลทุ่งหัวช้าง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="36"><td class="rank-cell">36</td><td>เชียงราย</td><td>11200</td><td class="name-cell">โรงพยาบาลแม่ฟ้าหลวง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F1</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="37"><td class="rank-cell">37</td><td>เชียงใหม่</td><td>10713</td><td class="name-cell">โรงพยาบาลนครพิงค์</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">A</td><td class="num">750</td></tr>
+              <tr class="sev-1" data-rank="44"><td class="rank-cell">44</td><td>น่าน</td><td>11182</td><td class="name-cell">โรงพยาบาลบ่อเกลือ</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">16</td></tr>
+              <tr class="sev-1" data-rank="49"><td class="rank-cell">49</td><td>น่าน</td><td>25017</td><td class="name-cell">โรงพยาบาลภูเพียง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">20</td></tr>
+              <tr class="sev-1" data-rank="52"><td class="rank-cell">52</td><td>เชียงใหม่</td><td>11136</td><td class="name-cell">โรงพยาบาลเวียงแหง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="53"><td class="rank-cell">53</td><td>พะเยา</td><td>40745</td><td class="name-cell">โรงพยาบาลภูกามยาว</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F3</td><td class="num">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ทีมพะเยา -->
+      <div class="team-section" data-total="14">
+        <div class="team-sec-head"><span class="team-sec-name">ทีมพะเยา</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
+            <thead><tr><th>ลำดับ</th><th>จังหวัด</th><th>รหัส</th><th>ชื่อหน่วยบริการ</th><th class="ctr">จำนวน<br>ที่เข้า</th><th>เกณฑ์ที่เข้า</th><th class="ctr">ระดับ</th><th class="num">เตียง</th></tr></thead>
+            <tbody>
+              <tr class="sev-3" data-rank="2"><td class="rank-cell">2</td><td>แม่ฮ่องสอน</td><td>11207</td><td class="name-cell">โรงพยาบาลสบเมย</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-2" data-rank="5"><td class="rank-cell">5</td><td>เชียงใหม่</td><td>11131</td><td class="name-cell">โรงพยาบาลหางดง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">M2</td><td class="num">90</td></tr>
+              <tr class="sev-2" data-rank="6"><td class="rank-cell">6</td><td>เชียงใหม่</td><td>11133</td><td class="name-cell">โรงพยาบาลดอยเต่า</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-2" data-rank="11"><td class="rank-cell">11</td><td>น่าน</td><td>11176</td><td class="name-cell">โรงพยาบาลท่าวังผา</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">54</td></tr>
+              <tr class="sev-1" data-rank="19"><td class="rank-cell">19</td><td>ลำปาง</td><td>11151</td><td class="name-cell">โรงพยาบาลวังเหนือ</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="21"><td class="rank-cell">21</td><td>เชียงราย</td><td>11189</td><td class="name-cell">โรงพยาบาลเทิง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">85</td></tr>
+              <tr class="sev-1" data-rank="22"><td class="rank-cell">22</td><td>เชียงราย</td><td>11199</td><td class="name-cell">โรงพยาบาลขุนตาล</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">44</td></tr>
+              <tr class="sev-1" data-rank="23"><td class="rank-cell">23</td><td>เชียงราย</td><td>11202</td><td class="name-cell">โรงพยาบาลเวียงเชียงรุ้ง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="33"><td class="rank-cell">33</td><td>เชียงใหม่</td><td>11125</td><td class="name-cell">โรงพยาบาลฝาง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">M1</td><td class="num">232</td></tr>
+              <tr class="sev-1" data-rank="41"><td class="rank-cell">41</td><td>เชียงใหม่</td><td>11135</td><td class="name-cell">โรงพยาบาลสารภี</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F1</td><td class="num">71</td></tr>
+              <tr class="sev-1" data-rank="43"><td class="rank-cell">43</td><td>แพร่</td><td>11171</td><td class="name-cell">โรงพยาบาลวังชิ้น</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">36</td></tr>
+              <tr class="sev-1" data-rank="50"><td class="rank-cell">50</td><td>เชียงใหม่</td><td>11129</td><td class="name-cell">โรงพยาบาลสันกำแพง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">50</td></tr>
+              <tr class="sev-1" data-rank="54"><td class="rank-cell">54</td><td>ลำปาง</td><td>11150</td><td class="name-cell">โรงพยาบาลแจ้ห่ม</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="55"><td class="rank-cell">55</td><td>เชียงใหม่</td><td>06009</td><td class="name-cell">โรงพยาบาลแม่ตื่น</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F3</td><td class="num">16</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ทีมน่าน -->
+      <div class="team-section" data-total="14">
+        <div class="team-sec-head"><span class="team-sec-name">ทีมน่าน</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
+            <thead><tr><th>ลำดับ</th><th>จังหวัด</th><th>รหัส</th><th>ชื่อหน่วยบริการ</th><th class="ctr">จำนวน<br>ที่เข้า</th><th>เกณฑ์ที่เข้า</th><th class="ctr">ระดับ</th><th class="num">เตียง</th></tr></thead>
+            <tbody>
+              <tr class="sev-3" data-rank="1"><td class="rank-cell">1</td><td>เชียงใหม่</td><td>11132</td><td class="name-cell">โรงพยาบาลฮอด</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">60</td></tr>
+              <tr class="sev-2" data-rank="7"><td class="rank-cell">7</td><td>เชียงใหม่</td><td>11138</td><td class="name-cell">โรงพยาบาลแม่วาง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">37</td></tr>
+              <tr class="sev-2" data-rank="8"><td class="rank-cell">8</td><td>เชียงใหม่</td><td>11643</td><td class="name-cell">โรงพยาบาลดอยหล่อ</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">39</td></tr>
+              <tr class="sev-1" data-rank="16"><td class="rank-cell">16</td><td>พะเยา</td><td>11186</td><td class="name-cell">โรงพยาบาลดอกคำใต้</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">60</td></tr>
+              <tr class="sev-1" data-rank="18"><td class="rank-cell">18</td><td>ลำปาง</td><td>11149</td><td class="name-cell">โรงพยาบาลงาว</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">40</td></tr>
+              <tr class="sev-1" data-rank="24"><td class="rank-cell">24</td><td>เชียงใหม่</td><td>11128</td><td class="name-cell">โรงพยาบาลสันป่าตอง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">M1</td><td class="num">198</td></tr>
+              <tr class="sev-1" data-rank="28"><td class="rank-cell">28</td><td>เชียงใหม่</td><td>23736</td><td class="name-cell">โรงพยาบาลวัดจันทร์ เฉลิมพระเกียรติ 80 พรรษา</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">F3</td><td class="num">25</td></tr>
+              <tr class="sev-1" data-rank="29"><td class="rank-cell">29</td><td>แม่ฮ่องสอน</td><td>11203</td><td class="name-cell">โรงพยาบาลขุนยวม</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">3</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="38"><td class="rank-cell">38</td><td>เชียงใหม่</td><td>11134</td><td class="name-cell">โรงพยาบาลอมก๋อย</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F1</td><td class="num">78</td></tr>
+              <tr class="sev-1" data-rank="39"><td class="rank-cell">39</td><td>แพร่</td><td>11169</td><td class="name-cell">โรงพยาบาลสูงเม่น</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F1</td><td class="num">64</td></tr>
+              <tr class="sev-1" data-rank="40"><td class="rank-cell">40</td><td>เชียงใหม่</td><td>11124</td><td class="name-cell">โรงพยาบาลสะเมิง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">37</td></tr>
+              <tr class="sev-1" data-rank="42"><td class="rank-cell">42</td><td>เชียงใหม่</td><td>11139</td><td class="name-cell">โรงพยาบาลแม่ออน</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">30</td></tr>
+              <tr class="sev-1" data-rank="47"><td class="rank-cell">47</td><td>เชียงราย</td><td>11454</td><td class="name-cell">โรงพยาบาลสมเด็จพระยุพราชเชียงของ</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">M2</td><td class="num">60</td></tr>
+              <tr class="sev-1" data-rank="48"><td class="rank-cell">48</td><td>เชียงใหม่</td><td>11123</td><td class="name-cell">โรงพยาบาลแม่แตง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">60</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="foot-note">* อันดับ 1–2 และ 3–4 คะแนนเท่ากัน จัดลำดับย่อยด้วย Risk Scoring ที่สูงกว่า · ปุ่ม "แสดง" กรองตามลำดับคะแนนรวม (ลำดับที่ 1 ถึง N) กระจายในทุกทีมตามจริง</p>
+    </section>
+
+    <div class="rule"></div>
+
+    <!-- ===== 5. TEAM ASSIGNMENT ===== -->
+    <section>
+      <div class="sec-head">
+        <h2 class="sec-title">การแบ่งทีมตรวจ 4 จังหวัด</h2>
+        <p class="sec-sub">หมุนเวียนข้ามจังหวัด ไม่ตรวจหน่วยในจังหวัดตนเอง</p>
+      </div>
+
+      <div class="team-wrap">
+        <svg class="team-svg" width="968" height="296" viewBox="0 0 968 296">
+          <line x1="300" y1="80" x2="452" y2="134" stroke="#AFC7DD" stroke-width="2"/>
+          <line x1="668" y1="80" x2="516" y2="134" stroke="#AFC7DD" stroke-width="2"/>
+          <line x1="668" y1="216" x2="516" y2="162" stroke="#AFC7DD" stroke-width="2"/>
+          <line x1="300" y1="216" x2="452" y2="162" stroke="#AFC7DD" stroke-width="2"/>
+        </svg>
+        <div class="hub">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/></svg>
+        </div>
+
+        <div class="team-box b1">
+          <span class="team-name">ทีมเชียงใหม่</span>
+          <span class="team-count">รับผิดชอบ <b>14</b> แห่ง</span>
+          <span class="team-scope">กระจายในลำปาง / พะเยา / น่าน</span>
+          <span class="team-badges"><i class="level-tag">F3</i><i class="level-tag">F2</i><i class="level-tag">F1</i><i class="level-tag">M2</i></span>
+        </div>
+        <div class="team-box b2">
+          <span class="team-name">ทีมลำปาง</span>
+          <span class="team-count">รับผิดชอบ <b>13</b> แห่ง</span>
+          <span class="team-scope">กระจายในเชียงใหม่ / พะเยา / น่าน</span>
+          <span class="team-badges"><i class="level-tag">F3</i><i class="level-tag">F2</i><i class="level-tag">F1</i><i class="level-tag">M2</i></span>
+        </div>
+        <div class="team-box b3">
+          <span class="team-name">ทีมพะเยา</span>
+          <span class="team-count">รับผิดชอบ <b>14</b> แห่ง</span>
+          <span class="team-scope">กระจายในเชียงใหม่ / ลำปาง / น่าน</span>
+          <span class="team-badges"><i class="level-tag">F3</i><i class="level-tag">F2</i><i class="level-tag">F1</i><i class="level-tag">M2</i></span>
+        </div>
+        <div class="team-box b4">
+          <span class="team-name">ทีมน่าน</span>
+          <span class="team-count">รับผิดชอบ <b>14</b> แห่ง</span>
+          <span class="team-scope">กระจายในเชียงใหม่ / ลำปาง / พะเยา</span>
+          <span class="team-badges"><i class="level-tag">F3</i><i class="level-tag">F2</i><i class="level-tag">F1</i><i class="level-tag">M2</i></span>
+        </div>
+      </div>
+      <p class="team-caption">รวม 14 + 13 + 14 + 14 = 55 แห่ง · แต่ละทีมตรวจข้าม 3 จังหวัดอื่น ไม่ตรวจหน่วยในจังหวัดตนเอง และกระจายระดับศักยภาพครบ F3 / F2 / F1 / M2</p>
+    </section>
+
+    <div class="rule"></div>
+
+    <!-- ===== 6. OBSERVATIONS ===== -->
+    <section class="last">
+      <div class="sec-head">
+        <h2 class="sec-title">ข้อสังเกตที่น่าสนใจ</h2>
+      </div>
+      <div class="obs-list">
+        <div class="obs-item">
+          <svg class="obs-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
+          <p><b>แม่ทา</b> เป็น รพ. เดียวที่ EBITDA ติดลบทั้งผลจริงปี 69 และแผนที่วางไว้ปี 70</p>
+        </div>
+        <div class="obs-item">
+          <svg class="obs-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
+          <p><b>14 แห่ง</b> EBITDA ปี 69 ติดลบ แต่แผนปี 70 วางเป็นบวก — ควรตรวจสอบสมมติฐานของแผน</p>
+        </div>
+        <div class="obs-item">
+          <svg class="obs-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
+          <p><b>4 แห่ง</b> วางแผนขาดดุลแต่ลงทุนเกิน 20% ของ EBITDA — หางดง, ฮอด, ขุนยวม, แม่สะเรียง</p>
+        </div>
+        <div class="obs-item">
+          <svg class="obs-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
+          <p><b>4 แห่ง</b> ข้อมูลไม่ครบ — น่าน ไม่มีผล ก.ย. 69; นาหมื่น, แม่พริก, ลี้ ไม่มีแผนปี 70</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer" style="border-top:1px solid var(--line); margin:0 56px;">
+      <p class="src">แหล่งข้อมูล: ระบบ Planfin กองเศรษฐกิจสุขภาพ (HFO) ณ 9–10 ต.ค. 2569 · ระบบ 7 Risk Scoring เขตสุขภาพที่ 1 ณ ก.ย. 2569</p>
+      <p class="note">คณะกรรมการตรวจสอบ ไม่เกินตามที่กำหนด<br>สามารถลดจำนวนต่อทีมได้ตามลำดับ</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  function applyFilter(n){
+    document.querySelectorAll('.team-section').forEach(function(sec){
+      var visible = 0;
+      sec.querySelectorAll('tr[data-rank]').forEach(function(tr){
+        var show = parseInt(tr.dataset.rank, 10) <= n;
+        tr.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      sec.querySelector('.team-sec-count').textContent = 'แสดง ' + visible + ' จาก ' + sec.dataset.total + ' แห่ง';
+      sec.style.display = visible > 0 ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      applyFilter(parseInt(btn.dataset.n, 10));
+    });
+  });
+  applyFilter(55);
+
+  var exportBtn = document.getElementById('exportBtn');
+  var exportLabel = exportBtn.innerHTML;
+  function setExportState(html, disabled){
+    exportBtn.innerHTML = html;
+    exportBtn.disabled = !!disabled;
+  }
+  exportBtn.addEventListener('click', async function(){
+    setExportState('กำลังเตรียมไฟล์...', true);
+    try{
+      if (!window.claude || !window.claude.use) throw { code: 'unavailable' };
+      var downloads = await window.claude.use('downloads');
+      if (!downloads) throw { code: 'unavailable' };
+      if (typeof XLSX === 'undefined') throw { code: 'unavailable' };
+
+      var wb = XLSX.utils.book_new();
+      var anySheet = false;
+      document.querySelectorAll('.team-section').forEach(function(sec){
+        if (sec.style.display === 'none') return;
+        var rows = [['ลำดับ','จังหวัด','รหัส','ชื่อหน่วยบริการ','จำนวนที่เข้า','เกณฑ์ที่เข้า','ระดับ','เตียง']];
+        sec.querySelectorAll('tbody tr[data-rank]').forEach(function(tr){
+          if (tr.style.display === 'none') return;
+          var tds = tr.querySelectorAll('td');
+          var critPills = Array.from(tds[5].querySelectorAll('.pill')).map(function(p){ return p.textContent.trim(); }).join(',');
+          rows.push([
+            tds[0].textContent.trim(),
+            tds[1].textContent.trim(),
+            tds[2].textContent.trim(),
+            tds[3].textContent.trim(),
+            tds[4].textContent.trim(),
+            critPills,
+            tds[6].textContent.trim(),
+            tds[7].textContent.trim()
+          ]);
+        });
+        if (rows.length <= 1) return;
+        anySheet = true;
+        var ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{wch:6},{wch:12},{wch:8},{wch:42},{wch:9},{wch:10},{wch:7},{wch:7}];
+        var teamName = sec.querySelector('.team-sec-name').textContent.trim().slice(0, 31);
+        XLSX.utils.book_append_sheet(wb, ws, teamName);
+      });
+      if (!anySheet) throw { code: 'bad_request' };
+
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      var blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      var result = await downloads.save({ filename: 'รายชื่อหน่วยบริการเข้าเกณฑ์ 2569.xlsx', data: blob });
+      setExportState(result.status === 'saved' ? 'บันทึกไฟล์แล้ว ✓' : 'ส่งไฟล์แล้ว ✓', false);
+    } catch (err) {
+      var code = err && err.code;
+      if (code === 'declined') setExportState('ยกเลิกการบันทึก', false);
+      else if (code === 'rate_limited') setExportState('ลองใหม่อีกครั้ง', false);
+      else setExportState('ดาวน์โหลดไม่ได้ในมุมมองนี้', false);
+    } finally {
+      setTimeout(function(){ setExportState(exportLabel, false); }, 2600);
+    }
+  });
+})();
+</script>
