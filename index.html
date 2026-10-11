@@ -170,6 +170,19 @@
     display:flex;
     flex-direction:column;
     gap:10px;
+    cursor:pointer;
+    transition:box-shadow .15s, transform .15s;
+  }
+  .crit-card:hover, .crit-card:focus-visible{
+    box-shadow:0 6px 16px rgba(21,49,74,.18);
+    transform:translateY(-2px);
+    outline:none;
+  }
+  .crit-hint{
+    font-size:11px;
+    color:var(--navy);
+    font-weight:600;
+    margin-top:-4px;
   }
   .crit-card[data-w="2"]{ border-top-color:var(--w2); }
   .crit-card[data-w="3"]{ border-top-color:var(--w3); }
@@ -358,13 +371,18 @@
     display:flex;
     align-items:baseline;
     justify-content:space-between;
+    gap:10px;
     background:var(--navy-ink);
     color:#fff;
     padding:8px 12px;
     border-radius:3px 3px 0 0;
+    cursor:pointer;
   }
+  .team-sec-head:hover{ background:var(--navy); }
   .team-sec-name{ font-family:"Prompt",sans-serif; font-weight:700; font-size:14px; }
+  .team-sec-head-right{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
   .team-sec-count{ font-size:12px; color:#C7D7E5; font-variant-numeric:tabular-nums; }
+  .team-sec-view{ font-size:11.5px; color:#FFD88A; font-weight:600; white-space:nowrap; }
   .team-section .data-table{ border:1px solid var(--line); border-top:none; }
 
   .data-table thead th{
@@ -399,7 +417,8 @@
     color:var(--ink-faint);
     text-align:center;
   }
-  .data-table td.name-cell{ font-weight:600; white-space:normal; }
+  .data-table td.name-cell{ font-weight:600; white-space:normal; cursor:pointer; }
+  .data-table td.name-cell:hover{ color:var(--navy); text-decoration:underline; }
   .data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; }
   .data-table td.ctr{ text-align:center; }
   .data-table td.pass{ color:var(--ink-faint); text-align:center; }
@@ -536,6 +555,78 @@
     text-align:right;
     white-space:nowrap;
   }
+
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(21,49,74,.55);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:5vh 16px;
+    z-index:100;
+    overflow-y:auto;
+  }
+  .modal-overlay[hidden]{ display:none; }
+  .modal-box{
+    background:var(--paper);
+    width:100%;
+    max-width:900px;
+    border-radius:6px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    overflow:hidden;
+  }
+  .modal-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    background:var(--navy-ink);
+    color:#fff;
+    padding:16px 20px;
+  }
+  .modal-head h3{ font-family:"Prompt",sans-serif; font-size:16px; font-weight:700; margin:0 0 4px; }
+  .modal-head p{ font-size:12.5px; color:#C7D7E5; margin:0; }
+  .modal-close{
+    background:rgba(255,255,255,.12);
+    border:none;
+    color:#fff;
+    width:28px;height:28px;
+    border-radius:50%;
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .modal-close:hover{ background:rgba(255,255,255,.25); }
+  .modal-body{
+    padding:20px;
+    max-height:70vh;
+    overflow-y:auto;
+  }
+
+  .fd-top{ display:flex; flex-wrap:wrap; gap:8px 20px; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid var(--line); font-size:12.5px; color:var(--ink-soft); }
+  .fd-top b{ color:var(--ink); }
+  .fd-gap{ background:var(--yellow-tint); border:1px solid #EAD28A; color:#7A5B00; border-radius:3px; padding:8px 12px; font-size:12.5px; margin-bottom:14px; }
+  .fd-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .fd-card{ border:1px solid var(--line); border-radius:4px; padding:12px 14px; }
+  .fd-card.hit{ border-color:var(--red); background:var(--red-tint); }
+  .fd-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .fd-card-title{ font-family:"Prompt",sans-serif; font-weight:700; font-size:13px; color:var(--navy-ink); }
+  .fd-badge{ font-family:"Prompt",sans-serif; font-size:10.5px; font-weight:700; border-radius:20px; padding:2px 9px; color:#fff; background:var(--ink-faint); }
+  .fd-card.hit .fd-badge{ background:var(--red); }
+  .fd-row{ display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; color:var(--ink-soft); }
+  .fd-row b{ color:var(--ink); font-variant-numeric:tabular-nums; }
+  .fd-row b.neg{ color:var(--red); }
+
+  .modal-table-wrap{ overflow-x:auto; }
+  .modal-table{ width:100%; border-collapse:collapse; font-size:12.3px; }
+  .modal-table th{ background:var(--navy-tint); color:var(--navy-ink); font-family:"Prompt",sans-serif; font-weight:700; font-size:11px; text-align:left; padding:7px 9px; white-space:nowrap; }
+  .modal-table td{ padding:6px 9px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  .modal-table td.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  .modal-table td.neg{ color:var(--red); }
+  .modal-table tr.clickable{ cursor:pointer; }
+  .modal-table tr.clickable:hover td{ background:var(--navy-tint); }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap">
@@ -571,7 +662,7 @@
       </div>
       <div class="criteria-grid">
 
-        <div class="crit-card" data-w="1">
+        <div class="crit-card" data-w="1" data-crit="1" role="button" tabindex="0">
           <div class="crit-top">
             <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.3"/><path d="M8.2 10.6 12 7l3.8 3.6M8.2 13.4 12 17l3.8-3.6"/></svg>
             <span class="crit-weight">น้ำหนัก 1</span>
@@ -579,9 +670,10 @@
           <p class="crit-label">เกณฑ์ที่ 1</p>
           <p class="crit-text">ผล Planfin ปี 69 เทียบแผน คลาดเคลื่อนเกิน ±5% ทั้งด้านรายได้และค่าใช้จ่าย</p>
           <div class="crit-count"><b>22</b><span>แห่ง</span></div>
+          <span class="crit-hint">คลิกดูรายชื่อ+ผลตัวเลข ›</span>
         </div>
 
-        <div class="crit-card" data-w="2">
+        <div class="crit-card" data-w="2" data-crit="2" role="button" tabindex="0">
           <div class="crit-top">
             <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 10 13l3-3 7 7.5"/><path d="M15.5 17.5H20v-4.5"/></svg>
             <span class="crit-weight">น้ำหนัก 2</span>
@@ -589,9 +681,10 @@
           <p class="crit-label">เกณฑ์ที่ 2</p>
           <p class="crit-text">EBITDA ผลดำเนินงานจริง เดือน ก.ย. 69 ติดลบ</p>
           <div class="crit-count"><b>16</b><span>แห่ง</span></div>
+          <span class="crit-hint">คลิกดูรายชื่อ+ผลตัวเลข ›</span>
         </div>
 
-        <div class="crit-card" data-w="3">
+        <div class="crit-card" data-w="3" data-crit="3" role="button" tabindex="0">
           <div class="crit-top">
             <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="1.4"/><path d="M4 9.3h16M8 3v4M16 3v4"/><path d="M9.3 16.3h5.4M12 13.6v5.4"/></svg>
             <span class="crit-weight">น้ำหนัก 3</span>
@@ -599,9 +692,10 @@
           <p class="crit-label">เกณฑ์ที่ 3</p>
           <p class="crit-text">แผน EBITDA ปี 70 ที่ยื่นไว้ ติดลบ (วางแผนขาดดุลล่วงหน้า)</p>
           <div class="crit-count"><b>14</b><span>แห่ง</span></div>
+          <span class="crit-hint">คลิกดูรายชื่อ+ผลตัวเลข ›</span>
         </div>
 
-        <div class="crit-card" data-w="4">
+        <div class="crit-card" data-w="4" data-crit="4" role="button" tabindex="0">
           <div class="crit-top">
             <svg class="crit-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
             <span class="crit-weight">น้ำหนัก 4</span>
@@ -609,6 +703,7 @@
           <p class="crit-label">เกณฑ์ที่ 4</p>
           <p class="crit-text">ระดับวิกฤตทางการเงิน 6–7 ณ เดือน ก.ย. 69</p>
           <div class="crit-count"><b>23</b><span>แห่ง</span></div>
+          <span class="crit-hint">คลิกดูรายชื่อ+ผลตัวเลข ›</span>
         </div>
 
       </div>
@@ -686,8 +781,8 @@
       </div>
 
       <!-- ทีมเชียงใหม่ -->
-      <div class="team-section" data-total="14">
-        <div class="team-sec-head"><span class="team-sec-name">ทีมเชียงใหม่</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+      <div class="team-section" data-total="14" data-team="ทีมเชียงใหม่">
+        <div class="team-sec-head" role="button" tabindex="0"><span class="team-sec-name">ทีมเชียงใหม่</span><span class="team-sec-head-right"><span class="team-sec-view">ดูรายละเอียดทีม ›</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></span></div>
         <div class="table-wrap">
           <table class="data-table">
             <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
@@ -713,8 +808,8 @@
       </div>
 
       <!-- ทีมลำปาง -->
-      <div class="team-section" data-total="13">
-        <div class="team-sec-head"><span class="team-sec-name">ทีมลำปาง</span><span class="team-sec-count">แสดง 13 จาก 13 แห่ง</span></div>
+      <div class="team-section" data-total="13" data-team="ทีมลำปาง">
+        <div class="team-sec-head" role="button" tabindex="0"><span class="team-sec-name">ทีมลำปาง</span><span class="team-sec-head-right"><span class="team-sec-view">ดูรายละเอียดทีม ›</span><span class="team-sec-count">แสดง 13 จาก 13 แห่ง</span></span></div>
         <div class="table-wrap">
           <table class="data-table">
             <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
@@ -739,8 +834,8 @@
       </div>
 
       <!-- ทีมพะเยา -->
-      <div class="team-section" data-total="14">
-        <div class="team-sec-head"><span class="team-sec-name">ทีมพะเยา</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+      <div class="team-section" data-total="14" data-team="ทีมพะเยา">
+        <div class="team-sec-head" role="button" tabindex="0"><span class="team-sec-name">ทีมพะเยา</span><span class="team-sec-head-right"><span class="team-sec-view">ดูรายละเอียดทีม ›</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></span></div>
         <div class="table-wrap">
           <table class="data-table">
             <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
@@ -766,8 +861,8 @@
       </div>
 
       <!-- ทีมน่าน -->
-      <div class="team-section" data-total="14">
-        <div class="team-sec-head"><span class="team-sec-name">ทีมน่าน</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></div>
+      <div class="team-section" data-total="14" data-team="ทีมน่าน">
+        <div class="team-sec-head" role="button" tabindex="0"><span class="team-sec-name">ทีมน่าน</span><span class="team-sec-head-right"><span class="team-sec-view">ดูรายละเอียดทีม ›</span><span class="team-sec-count">แสดง 14 จาก 14 แห่ง</span></span></div>
         <div class="table-wrap">
           <table class="data-table">
             <colgroup><col class="c-rank"><col class="c-prov"><col class="c-code"><col class="c-name-wide"><col class="c-sev"><col class="c-crit"><col class="c-lvl"><col class="c-bed"></colgroup>
@@ -883,7 +978,22 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle"></h3>
+        <p id="modalSub"></p>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="ปิด">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <script>
+const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โรงพยาบาลฮอด","level":"F1","beds":60,"revPlan":69776941.0,"revAct":84038268.0,"revPct":0.2044,"revPass":0,"expPlan":150060756.0,"expAct":158099721.0,"expPct":0.0536,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":7058398.0,"c2":0,"ebitdaPlan70":-3528373.0,"sum3":"แผนขาดดุล","invest20":"เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11207":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลสบเมย","level":"F2","beds":30,"revPlan":55145720.0,"revAct":60780178.0,"revPct":0.1022,"revPass":0,"expPlan":115798415.0,"expAct":108082122.0,"expPct":-0.0666,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":2892327.0,"c2":0,"ebitdaPlan70":-4892569.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11181":{"prov":"น่าน","name":"โรงพยาบาลสันติสุข","level":"F2","beds":20,"revPlan":53463888.0,"revAct":50171771.0,"revPct":-0.0616,"revPass":0,"expPlan":76738188.0,"expAct":72166272.0,"expPct":-0.0596,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":-804160.0,"c2":1,"ebitdaPlan70":5403338.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11198":{"prov":"เชียงราย","name":"โรงพยาบาลเวียงแก่น","level":"F1","beds":46,"revPlan":63456895.0,"revAct":66639008.0,"revPct":0.0501,"revPass":0,"expPlan":116513829.0,"expAct":124849060.0,"expPct":0.0715,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":-4684254.0,"c2":1,"ebitdaPlan70":4225678.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11131":{"prov":"เชียงใหม่","name":"โรงพยาบาลหางดง","level":"M2","beds":90,"revPlan":175197928.0,"revAct":198172730.0,"revPct":0.1311,"revPass":0,"expPlan":261577845.0,"expAct":260794713.0,"expPct":-0.003,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":14564008.0,"c2":0,"ebitdaPlan70":-9845288.0,"sum3":"แผนขาดดุล","invest20":"เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11133":{"prov":"เชียงใหม่","name":"โรงพยาบาลดอยเต่า","level":"F2","beds":30,"revPlan":48543035.0,"revAct":61535910.0,"revPct":0.2677,"revPass":0,"expPlan":98201191.0,"expAct":99051827.0,"expPct":0.0087,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":5884703.0,"c2":0,"ebitdaPlan70":-2428434.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11138":{"prov":"เชียงใหม่","name":"โรงพยาบาลแม่วาง","level":"F2","beds":37,"revPlan":74445000.0,"revAct":93684608.0,"revPct":0.2584,"revPass":0,"expPlan":126191100.0,"expAct":129275330.0,"expPct":0.0244,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":5809972.0,"c2":0,"ebitdaPlan70":-8821400.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11643":{"prov":"เชียงใหม่","name":"โรงพยาบาลดอยหล่อ","level":"F2","beds":39,"revPlan":58759876.0,"revAct":66345121.0,"revPct":0.1291,"revPass":0,"expPlan":94001075.0,"expAct":96756564.0,"expPct":0.0293,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":2907930.0,"c2":0,"ebitdaPlan70":-6748300.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11205":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลแม่สะเรียง","level":"M2","beds":96,"revPlan":205500941.0,"revAct":227101288.0,"revPct":0.1051,"revPass":0,"expPlan":311488913.0,"expAct":310866131.0,"expPct":-0.002,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":18132965.0,"c2":0,"ebitdaPlan70":-23081088.0,"sum3":"แผนขาดดุล","invest20":"เกิน","c3":1,"risk":6,"c4":1,"gap":null},"11140":{"prov":"ลำพูน","name":"โรงพยาบาลแม่ทา","level":"F2","beds":30,"revPlan":55421823.0,"revAct":67743572.0,"revPct":0.2223,"revPass":0,"expPlan":106703470.0,"expAct":125496544.0,"expPct":0.1761,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":-4015333.0,"c2":1,"ebitdaPlan70":-7553671.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":4,"c4":0,"gap":null},"11176":{"prov":"น่าน","name":"โรงพยาบาลท่าวังผา","level":"F1","beds":54,"revPlan":98377315.0,"revAct":102316481.0,"revPct":0.04,"revPass":1,"expPlan":180286961.0,"expAct":189777399.0,"expPct":0.0526,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-17486350.0,"c2":1,"ebitdaPlan70":1145554.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11141":{"prov":"ลำพูน","name":"โรงพยาบาลบ้านโฮ่ง","level":"F2","beds":30,"revPlan":85467209.0,"revAct":90280075.0,"revPct":0.0563,"revPass":0,"expPlan":135433157.0,"expAct":140765703.0,"expPct":0.0394,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-2730815.0,"c2":1,"ebitdaPlan70":1286700.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11142":{"prov":"ลำพูน","name":"โรงพยาบาลลี้","level":"F1","beds":99,"revPlan":156765500.0,"revAct":150932042.0,"revPct":-0.0372,"revPass":1,"expPlan":262426935.0,"expAct":273799541.0,"expPct":0.0433,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":-6734669.0,"c2":1,"ebitdaPlan70":null,"sum3":null,"invest20":null,"c3":null,"risk":6,"c4":1,"gap":"ข้อ 3: ไม่มีแผน 70"},"11144":{"prov":"ลำพูน","name":"โรงพยาบาลป่าซาง","level":"M2","beds":75,"revPlan":150247558.0,"revAct":157463756.0,"revPct":0.048,"revPass":1,"expPlan":244298495.0,"expAct":257633757.0,"expPct":0.0546,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-5017569.0,"c2":1,"ebitdaPlan70":14016810.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11177":{"prov":"น่าน","name":"โรงพยาบาลเวียงสา","level":"F1","beds":78,"revPlan":180029493.0,"revAct":192787675.0,"revPct":0.0709,"revPass":0,"expPlan":271924366.0,"expAct":278962780.0,"expPct":0.0259,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":19118273.0,"c2":0,"ebitdaPlan70":21895304.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11186":{"prov":"พะเยา","name":"โรงพยาบาลดอกคำใต้","level":"F2","beds":60,"revPlan":113415965.0,"revAct":129063758.0,"revPct":0.138,"revPass":0,"expPlan":201315598.0,"expAct":202096267.0,"expPct":0.0039,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":7762252.0,"c2":0,"ebitdaPlan70":8484541.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11147":{"prov":"ลำปาง","name":"โรงพยาบาลเกาะคา","level":"M1","beds":152,"revPlan":295635820.0,"revAct":297098817.0,"revPct":0.0049,"revPass":1,"expPlan":496667060.0,"expAct":456854840.0,"expPct":-0.0802,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":25863804.0,"c2":0,"ebitdaPlan70":28583470.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11149":{"prov":"ลำปาง","name":"โรงพยาบาลงาว","level":"F2","beds":40,"revPlan":88100460.0,"revAct":103990760.0,"revPct":0.1804,"revPass":0,"expPlan":144591960.0,"expAct":146561127.0,"expPct":0.0136,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":16468345.0,"c2":0,"ebitdaPlan70":599280.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11151":{"prov":"ลำปาง","name":"โรงพยาบาลวังเหนือ","level":"F2","beds":30,"revPlan":88096670.0,"revAct":99330615.0,"revPct":0.1275,"revPass":0,"expPlan":157486270.0,"expAct":161712236.0,"expPct":0.0268,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":10764130.0,"c2":0,"ebitdaPlan70":10153470.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"24956":{"prov":"ลำพูน","name":"โรงพยาบาลเวียงหนองล่อง","level":"F2","beds":16,"revPlan":48310940.0,"revAct":55382285.0,"revPct":0.1464,"revPass":0,"expPlan":73798980.0,"expAct":75950757.0,"expPct":0.0292,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":3504064.0,"c2":0,"ebitdaPlan70":67460.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11189":{"prov":"เชียงราย","name":"โรงพยาบาลเทิง","level":"F1","beds":85,"revPlan":140703823.0,"revAct":149179620.0,"revPct":0.0602,"revPass":0,"expPlan":282369176.0,"expAct":276843949.0,"expPct":-0.0196,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":8863545.0,"c2":0,"ebitdaPlan70":9132636.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11199":{"prov":"เชียงราย","name":"โรงพยาบาลขุนตาล","level":"F2","beds":44,"revPlan":69229562.0,"revAct":67379216.0,"revPct":-0.0267,"revPass":1,"expPlan":117952011.0,"expAct":121211597.0,"expPct":0.0276,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":856370.0,"c2":0,"ebitdaPlan70":4974239.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11202":{"prov":"เชียงราย","name":"โรงพยาบาลเวียงเชียงรุ้ง","level":"F2","beds":30,"revPlan":76520771.0,"revAct":80247302.0,"revPct":0.0487,"revPass":1,"expPlan":117168808.0,"expAct":118275879.0,"expPct":0.0094,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":1992652.0,"c2":0,"ebitdaPlan70":6748724.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":6,"c4":1,"gap":null},"11128":{"prov":"เชียงใหม่","name":"โรงพยาบาลสันป่าตอง","level":"M1","beds":198,"revPlan":357202380.0,"revAct":371291214.0,"revPct":0.0394,"revPass":1,"expPlan":594090050.0,"expAct":615135164.0,"expPct":0.0354,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":27007618.0,"c2":0,"ebitdaPlan70":30340270.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":6,"c4":1,"gap":null},"40744":{"prov":"พะเยา","name":"โรงพยาบาลภูซาง","level":"F3","beds":15,"revPlan":33239265.0,"revAct":36249533.0,"revPct":0.0906,"revPass":0,"expPlan":86591397.0,"expAct":98711950.0,"expPct":0.14,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":-5142470.0,"c2":1,"ebitdaPlan70":11662023.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":1,"c4":0,"gap":null},"11204":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลปาย","level":"F1","beds":58,"revPlan":123539098.0,"revAct":145597918.0,"revPct":0.1786,"revPass":0,"expPlan":182304835.0,"expAct":182487803.0,"expPct":0.001,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":5901980.0,"c2":0,"ebitdaPlan70":-8808549.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":5,"c4":0,"gap":null},"11143":{"prov":"ลำพูน","name":"โรงพยาบาลทุ่งหัวช้าง","level":"F2","beds":30,"revPlan":59664470.0,"revAct":67953984.0,"revPct":0.1389,"revPass":0,"expPlan":97711110.0,"expAct":100313089.0,"expPct":0.0266,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":4489860.0,"c2":0,"ebitdaPlan70":-8092880.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":4,"c4":0,"gap":null},"23736":{"prov":"เชียงใหม่","name":"โรงพยาบาลวัดจันทร์ เฉลิมพระเกียรติ 80 พรรษา","level":"F3","beds":25,"revPlan":33880600.0,"revAct":38272588.0,"revPct":0.1296,"revPass":0,"expPlan":63967500.0,"expAct":63154931.0,"expPct":-0.0127,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":6699723.0,"c2":0,"ebitdaPlan70":-4626550.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":4,"c4":0,"gap":null},"11203":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลขุนยวม","level":"F2","beds":30,"revPlan":75447500.0,"revAct":86163594.0,"revPct":0.142,"revPass":0,"expPlan":117333633.0,"expAct":118448464.0,"expPct":0.0095,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":3438219.0,"c2":0,"ebitdaPlan70":-4302129.0,"sum3":"แผนขาดดุล","invest20":"เกิน","c3":1,"risk":4,"c4":0,"gap":null},"11206":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลแม่ลาน้อย","level":"F2","beds":34,"revPlan":62150280.0,"revAct":61154249.0,"revPct":-0.016,"revPass":1,"expPlan":120632539.0,"expAct":113045285.0,"expPct":-0.0629,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":4738993.0,"c2":0,"ebitdaPlan70":-5305229.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":4,"c4":0,"gap":null},"10719":{"prov":"แม่ฮ่องสอน","name":"โรงพยาบาลศรีสังวาลย์","level":"S","beds":154,"revPlan":360618318.0,"revAct":385996864.0,"revPct":0.0704,"revPass":0,"expPlan":443075743.0,"expAct":444117592.0,"expPct":0.0024,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":35757372.0,"c2":0,"ebitdaPlan70":-22127622.0,"sum3":"แผนขาดดุล","invest20":"ไม่เกิน","c3":1,"risk":0,"c4":0,"gap":null},"11188":{"prov":"พะเยา","name":"โรงพยาบาลแม่ใจ","level":"F2","beds":30,"revPlan":77750168.0,"revAct":79664480.0,"revPct":0.0246,"revPass":1,"expPlan":117429588.0,"expAct":121657229.0,"expPct":0.036,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":-285857.0,"c2":1,"ebitdaPlan70":7629412.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":3,"c4":0,"gap":null},"11125":{"prov":"เชียงใหม่","name":"โรงพยาบาลฝาง","level":"M1","beds":232,"revPlan":468210868.0,"revAct":492506372.0,"revPct":0.0519,"revPass":0,"expPlan":698962648.0,"expAct":708235973.0,"expPct":0.0133,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-9405579.0,"c2":1,"ebitdaPlan70":52605524.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":3,"c4":0,"gap":null},"11184":{"prov":"พะเยา","name":"โรงพยาบาลจุน","level":"F2","beds":32,"revPlan":99009548.0,"revAct":100240090.0,"revPct":0.0124,"revPass":1,"expPlan":163416992.0,"expAct":163442689.0,"expPct":0.0002,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":-2958384.0,"c2":1,"ebitdaPlan70":3885479.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":2,"c4":0,"gap":null},"15012":{"prov":"เชียงราย","name":"โรงพยาบาลสมเด็จพระญาณสังวร","level":"F1","beds":30,"revPlan":139347648.0,"revAct":134407869.0,"revPct":-0.0354,"revPass":1,"expPlan":257966960.0,"expAct":256926758.0,"expPct":-0.004,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":-2433323.0,"c2":1,"ebitdaPlan70":3196468.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":2,"c4":0,"gap":null},"11200":{"prov":"เชียงราย","name":"โรงพยาบาลแม่ฟ้าหลวง","level":"F1","beds":30,"revPlan":93847233.0,"revAct":94624230.0,"revPct":0.0083,"revPass":1,"expPlan":156250175.0,"expAct":185502765.0,"expPct":0.1872,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-9842884.0,"c2":1,"ebitdaPlan70":3671955.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":1,"c4":0,"gap":null},"10713":{"prov":"เชียงใหม่","name":"โรงพยาบาลนครพิงค์","level":"A","beds":750,"revPlan":2471815000.0,"revAct":2539742513.0,"revPct":0.0275,"revPass":1,"expPlan":3341400000.0,"expAct":3578169457.0,"expPct":0.0709,"expPass":0,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-8368335.0,"c2":1,"ebitdaPlan70":216735000.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":1,"c4":0,"gap":null},"11134":{"prov":"เชียงใหม่","name":"โรงพยาบาลอมก๋อย","level":"F1","beds":78,"revPlan":64571522.0,"revAct":68146194.0,"revPct":0.0554,"revPass":0,"expPlan":155891419.0,"expAct":159939731.0,"expPct":0.026,"expPass":1,"sum1":"ไม่ผ่าน 1 แผน","c1":0,"ebitdaAct":-1488115.0,"c2":1,"ebitdaPlan70":7921020.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":1,"c4":0,"gap":null},"11169":{"prov":"แพร่","name":"โรงพยาบาลสูงเม่น","level":"F1","beds":64,"revPlan":154475700.0,"revAct":160033570.0,"revPct":0.036,"revPass":1,"expPlan":266106054.0,"expAct":276335481.0,"expPct":0.0384,"expPass":1,"sum1":"ผ่านทั้ง 2 แผน","c1":0,"ebitdaAct":-1858494.0,"c2":1,"ebitdaPlan70":16194559.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":1,"c4":0,"gap":null},"11124":{"prov":"เชียงใหม่","name":"โรงพยาบาลสะเมิง","level":"F2","beds":37,"revPlan":59253741.0,"revAct":70301218.0,"revPct":0.1864,"revPass":0,"expPlan":93566003.0,"expAct":99802860.0,"expPct":0.0667,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":5533838.0,"c2":0,"ebitdaPlan70":4581179.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":5,"c4":0,"gap":null},"11135":{"prov":"เชียงใหม่","name":"โรงพยาบาลสารภี","level":"F1","beds":71,"revPlan":115598757.0,"revAct":122614988.0,"revPct":0.0607,"revPass":0,"expPlan":166237757.0,"expAct":176317450.0,"expPct":0.0606,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":8498142.0,"c2":0,"ebitdaPlan70":8318275.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":4,"c4":0,"gap":null},"11139":{"prov":"เชียงใหม่","name":"โรงพยาบาลแม่ออน","level":"F2","beds":30,"revPlan":65017957.0,"revAct":76822939.0,"revPct":0.1816,"revPass":0,"expPlan":94110118.0,"expAct":99454739.0,"expPct":0.0568,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":10701948.0,"c2":0,"ebitdaPlan70":79180.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":4,"c4":0,"gap":null},"11171":{"prov":"แพร่","name":"โรงพยาบาลวังชิ้น","level":"F2","beds":36,"revPlan":90130720.0,"revAct":97974583.0,"revPct":0.087,"revPass":0,"expPlan":130097276.0,"expAct":137346405.0,"expPct":0.0557,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":19635307.0,"c2":0,"ebitdaPlan70":3031720.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":4,"c4":0,"gap":null},"11182":{"prov":"น่าน","name":"โรงพยาบาลบ่อเกลือ","level":"F2","beds":16,"revPlan":104355610.0,"revAct":112644771.0,"revPct":0.0794,"revPass":0,"expPlan":79575810.0,"expAct":66578213.0,"expPct":-0.1633,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":78603755.0,"c2":0,"ebitdaPlan70":24561597.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":3,"c4":0,"gap":null},"11185":{"prov":"พะเยา","name":"โรงพยาบาลเชียงม่วน","level":"F2","beds":30,"revPlan":63266190.0,"revAct":73625554.0,"revPct":0.1637,"revPass":0,"expPlan":94569350.0,"expAct":99791358.0,"expPct":0.0552,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":2328128.0,"c2":0,"ebitdaPlan70":5936203.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":3,"c4":0,"gap":null},"11153":{"prov":"ลำปาง","name":"โรงพยาบาลแม่พริก","level":"F2","beds":16,"revPlan":50006100.0,"revAct":56668086.0,"revPct":0.1332,"revPass":0,"expPlan":67184660.0,"expAct":75460325.0,"expPct":0.1232,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":7348921.0,"c2":0,"ebitdaPlan70":null,"sum3":null,"invest20":null,"c3":null,"risk":3,"c4":0,"gap":"ข้อ 3: ไม่มีแผน 70"},"11454":{"prov":"เชียงราย","name":"โรงพยาบาลสมเด็จพระยุพราชเชียงของ","level":"M2","beds":60,"revPlan":148382778.0,"revAct":163244281.0,"revPct":0.1002,"revPass":0,"expPlan":254084677.0,"expAct":285015976.0,"expPct":0.1217,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":325066.0,"c2":0,"ebitdaPlan70":40369174.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":3,"c4":0,"gap":null},"11123":{"prov":"เชียงใหม่","name":"โรงพยาบาลแม่แตง","level":"F2","beds":60,"revPlan":107560400.0,"revAct":179494214.0,"revPct":0.6688,"revPass":0,"expPlan":176391884.0,"expAct":198575079.0,"expPct":0.1258,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":61415943.0,"c2":0,"ebitdaPlan70":4722720.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":3,"c4":0,"gap":null},"25017":{"prov":"น่าน","name":"โรงพยาบาลภูเพียง","level":"F2","beds":20,"revPlan":58604534.0,"revAct":55104529.0,"revPct":-0.0597,"revPass":0,"expPlan":83293418.0,"expAct":69520714.0,"expPct":-0.1654,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":16381124.0,"c2":0,"ebitdaPlan70":27330853.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":2,"c4":0,"gap":null},"11129":{"prov":"เชียงใหม่","name":"โรงพยาบาลสันกำแพง","level":"F2","beds":50,"revPlan":95972150.0,"revAct":101720732.0,"revPct":0.0599,"revPass":0,"expPlan":153565738.0,"expAct":165244234.0,"expPct":0.076,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":7579597.0,"c2":0,"ebitdaPlan70":7606600.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":2,"c4":0,"gap":null},"11172":{"prov":"แพร่","name":"โรงพยาบาลหนองม่วงไข่","level":"F2","beds":32,"revPlan":73845204.0,"revAct":110406642.0,"revPct":0.4951,"revPass":0,"expPlan":104227583.0,"expAct":111014387.0,"expPct":0.0651,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":26339519.0,"c2":0,"ebitdaPlan70":62107184.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":2,"c4":0,"gap":null},"11136":{"prov":"เชียงใหม่","name":"โรงพยาบาลเวียงแหง","level":"F2","beds":30,"revPlan":69400638.0,"revAct":92970690.0,"revPct":0.3396,"revPass":0,"expPlan":102018258.0,"expAct":122135927.0,"expPct":0.1972,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":2095828.0,"c2":0,"ebitdaPlan70":2776500.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":1,"c4":0,"gap":null},"40745":{"prov":"พะเยา","name":"โรงพยาบาลภูกามยาว","level":"F3","beds":0,"revPlan":26110669.0,"revAct":37443325.0,"revPct":0.434,"revPass":0,"expPlan":45785915.0,"expAct":49292294.0,"expPct":0.0766,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":8093080.0,"c2":0,"ebitdaPlan70":3805429.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":0,"c4":0,"gap":null},"11150":{"prov":"ลำปาง","name":"โรงพยาบาลแจ้ห่ม","level":"F2","beds":30,"revPlan":105051605.0,"revAct":112645303.0,"revPct":0.0723,"revPass":0,"expPlan":148797560.0,"expAct":164204777.0,"expPct":0.1035,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":21524194.0,"c2":0,"ebitdaPlan70":8815370.0,"sum3":"แผนเกินดุล","invest20":"ไม่เกิน","c3":0,"risk":0,"c4":0,"gap":null},"06009":{"prov":"เชียงใหม่","name":"โรงพยาบาลแม่ตื่น","level":"F3","beds":16,"revPlan":52355725.0,"revAct":12275683.0,"revPct":-0.7655,"revPass":0,"expPlan":42729042.0,"expAct":52969489.0,"expPct":0.2397,"expPass":0,"sum1":"ไม่ผ่านทั้ง 2 แผน","c1":1,"ebitdaAct":6741548.0,"c2":0,"ebitdaPlan70":98210763.0,"sum3":"แผนเกินดุล","invest20":"เกิน","c3":0,"risk":0,"c4":0,"gap":null}};
+
 (function(){
   function applyFilter(n){
     document.querySelectorAll('.team-section').forEach(function(sec){
@@ -905,6 +1015,181 @@
     });
   });
   applyFilter(55);
+
+  // ---------- modal (criteria / facility / team drill-down) ----------
+  var CRIT_META = {
+    1: { label: 'เกณฑ์ที่ 1: ผล Planfin ปี 69 เทียบแผน เกิน ±5%', weight: 1 },
+    2: { label: 'เกณฑ์ที่ 2: EBITDA ผล ก.ย. 69 ติดลบ', weight: 2 },
+    3: { label: 'เกณฑ์ที่ 3: แผน EBITDA ปี 70 ติดลบ', weight: 3 },
+    4: { label: 'เกณฑ์ที่ 4: วิกฤตระดับ 6-7 ณ ก.ย. 69', weight: 4 }
+  };
+  var fmtBaht = function (v) {
+    if (v === null || v === undefined) return '—';
+    return Math.round(v).toLocaleString('th-TH');
+  };
+  var fmtPct = function (v) {
+    if (v === null || v === undefined) return '—';
+    var pct = (v * 100).toFixed(1);
+    return (v > 0 ? '+' : '') + pct + '%';
+  };
+  var negClass = function (v) { return (v !== null && v !== undefined && v < 0) ? ' neg' : ''; };
+
+  var overlay = document.getElementById('modalOverlay');
+  var modalTitle = document.getElementById('modalTitle');
+  var modalSub = document.getElementById('modalSub');
+  var modalBody = document.getElementById('modalBody');
+
+  function openModal(title, sub, bodyHtml) {
+    modalTitle.textContent = title;
+    modalSub.textContent = sub || '';
+    modalBody.innerHTML = bodyHtml;
+    overlay.hidden = false;
+  }
+  function closeModal() { overlay.hidden = true; modalBody.innerHTML = ''; }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) closeModal(); });
+
+  function facilityDetailHtml(code) {
+    var f = FACILITY_DATA[code];
+    if (!f) return '<p>ไม่พบข้อมูลหน่วยบริการนี้</p>';
+    var html = '';
+    html += '<div class="fd-top">';
+    html += '<span>จังหวัด: <b>' + f.prov + '</b></span>';
+    html += '<span>รหัส: <b>' + code + '</b></span>';
+    html += '<span>ระดับศักยภาพ: <b>' + f.level + '</b></span>';
+    html += '<span>จำนวนเตียง: <b>' + f.beds + '</b></span>';
+    html += '</div>';
+    if (f.gap) html += '<div class="fd-gap">⚠ ข้อมูลไม่ครบ: ' + f.gap + '</div>';
+    html += '<div class="fd-grid">';
+
+    html += '<div class="fd-card' + (f.c1 ? ' hit' : '') + '"><div class="fd-card-head"><span class="fd-card-title">เกณฑ์ 1: Planfin เทียบแผน ±5%</span><span class="fd-badge">' + (f.c1 ? 'เข้าเกณฑ์' : 'ไม่เข้า') + '</span></div>'
+      + '<div class="fd-row"><span>รายได้ แผน 69</span><b>' + fmtBaht(f.revPlan) + '</b></div>'
+      + '<div class="fd-row"><span>รายได้ ผล ก.ย. 69</span><b>' + fmtBaht(f.revAct) + '</b></div>'
+      + '<div class="fd-row"><span>รายได้ % ผลต่าง</span><b' + (f.revPass ? '' : ' class="neg"') + '>' + fmtPct(f.revPct) + (f.revPass ? ' (ผ่าน)' : ' (ไม่ผ่าน)') + '</b></div>'
+      + '<div class="fd-row"><span>ค่าใช้จ่าย แผน 69</span><b>' + fmtBaht(f.expPlan) + '</b></div>'
+      + '<div class="fd-row"><span>ค่าใช้จ่าย ผล ก.ย. 69</span><b>' + fmtBaht(f.expAct) + '</b></div>'
+      + '<div class="fd-row"><span>ค่าใช้จ่าย % ผลต่าง</span><b' + (f.expPass ? '' : ' class="neg"') + '>' + fmtPct(f.expPct) + (f.expPass ? ' (ผ่าน)' : ' (ไม่ผ่าน)') + '</b></div>'
+      + '<div class="fd-row"><span>สรุป</span><b>' + (f.sum1 || '—') + '</b></div>'
+      + '</div>';
+
+    html += '<div class="fd-card' + (f.c2 ? ' hit' : '') + '"><div class="fd-card-head"><span class="fd-card-title">เกณฑ์ 2: EBITDA ผล ก.ย. 69</span><span class="fd-badge">' + (f.c2 ? 'เข้าเกณฑ์' : 'ไม่เข้า') + '</span></div>'
+      + '<div class="fd-row"><span>EBITDA ผล ก.ย. 69</span><b class="' + (f.ebitdaAct < 0 ? 'neg' : '') + '">' + fmtBaht(f.ebitdaAct) + ' บาท</b></div>'
+      + '</div>';
+
+    html += '<div class="fd-card' + (f.c3 ? ' hit' : '') + '"><div class="fd-card-head"><span class="fd-card-title">เกณฑ์ 3: แผน EBITDA ปี 70</span><span class="fd-badge">' + (f.c3 ? 'เข้าเกณฑ์' : (f.c3 === null ? 'ไม่มีข้อมูล' : 'ไม่เข้า')) + '</span></div>'
+      + '<div class="fd-row"><span>EBITDA แผน 70</span><b class="' + (f.ebitdaPlan70 < 0 ? 'neg' : '') + '">' + fmtBaht(f.ebitdaPlan70) + ' บาท</b></div>'
+      + '<div class="fd-row"><span>สรุปแผนประมาณการ</span><b>' + (f.sum3 || '—') + '</b></div>'
+      + '<div class="fd-row"><span>ลงทุน เทียบ 20% ของ EBITDA</span><b>' + (f.invest20 || '—') + '</b></div>'
+      + '</div>';
+
+    html += '<div class="fd-card' + (f.c4 ? ' hit' : '') + '"><div class="fd-card-head"><span class="fd-card-title">เกณฑ์ 4: Risk Scoring ก.ย. 69</span><span class="fd-badge">' + (f.c4 ? 'เข้าเกณฑ์' : 'ไม่เข้า') + '</span></div>'
+      + '<div class="fd-row"><span>Risk Scoring</span><b>' + f.risk + ' / 7</b></div>'
+      + '</div>';
+
+    html += '</div>';
+    return html;
+  }
+
+  function openFacilityModal(code) {
+    var f = FACILITY_DATA[code];
+    if (!f) return;
+    openModal(f.name, f.prov + ' · รหัส ' + code, facilityDetailHtml(code));
+  }
+
+  function openCriteriaModal(critNum) {
+    var meta = CRIT_META[critNum];
+    var rows = [];
+    Object.keys(FACILITY_DATA).forEach(function (code) {
+      var f = FACILITY_DATA[code];
+      if (f['c' + critNum] === 1) rows.push([code, f]);
+    });
+    var cols, trs;
+    if (critNum === 1) {
+      rows.sort(function (a, b) { return a[1].prov.localeCompare(b[1].prov, 'th'); });
+      cols = ['จังหวัด', 'ชื่อหน่วยบริการ', 'รายได้แผน69', 'รายได้ผลก.ย.69', 'รายได้%ผลต่าง', 'ค่าใช้จ่ายแผน69', 'ค่าใช้จ่ายผลก.ย.69', 'ค่าใช้จ่าย%ผลต่าง'];
+      trs = rows.map(function (r) {
+        var code = r[0], f = r[1];
+        return '<tr class="clickable" data-code="' + code + '"><td>' + f.prov + '</td><td>' + f.name + '</td>'
+          + '<td class="num">' + fmtBaht(f.revPlan) + '</td><td class="num">' + fmtBaht(f.revAct) + '</td><td class="num' + negClass(f.revPct) + '">' + fmtPct(f.revPct) + '</td>'
+          + '<td class="num">' + fmtBaht(f.expPlan) + '</td><td class="num">' + fmtBaht(f.expAct) + '</td><td class="num' + negClass(f.expPct) + '">' + fmtPct(f.expPct) + '</td></tr>';
+      });
+    } else if (critNum === 2) {
+      rows.sort(function (a, b) { return a[1].ebitdaAct - b[1].ebitdaAct; });
+      cols = ['จังหวัด', 'ชื่อหน่วยบริการ', 'EBITDA ผล ก.ย. 69 (บาท)'];
+      trs = rows.map(function (r) {
+        var code = r[0], f = r[1];
+        return '<tr class="clickable" data-code="' + code + '"><td>' + f.prov + '</td><td>' + f.name + '</td><td class="num neg">' + fmtBaht(f.ebitdaAct) + '</td></tr>';
+      });
+    } else if (critNum === 3) {
+      rows.sort(function (a, b) { return (a[1].ebitdaPlan70 || 0) - (b[1].ebitdaPlan70 || 0); });
+      cols = ['จังหวัด', 'ชื่อหน่วยบริการ', 'EBITDA แผน 70 (บาท)', 'ลงทุนเทียบ 20% ของ EBITDA'];
+      trs = rows.map(function (r) {
+        var code = r[0], f = r[1];
+        return '<tr class="clickable" data-code="' + code + '"><td>' + f.prov + '</td><td>' + f.name + '</td><td class="num neg">' + fmtBaht(f.ebitdaPlan70) + '</td><td>' + (f.invest20 || '—') + '</td></tr>';
+      });
+    } else {
+      rows.sort(function (a, b) { return b[1].risk - a[1].risk; });
+      cols = ['จังหวัด', 'ชื่อหน่วยบริการ', 'Risk Scoring ก.ย. 69'];
+      trs = rows.map(function (r) {
+        var code = r[0], f = r[1];
+        return '<tr class="clickable" data-code="' + code + '"><td>' + f.prov + '</td><td>' + f.name + '</td><td class="num">' + f.risk + ' / 7</td></tr>';
+      });
+    }
+    var html = '<div class="modal-table-wrap"><table class="modal-table"><thead><tr>' + cols.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr></thead><tbody>' + trs.join('') + '</tbody></table></div>';
+    openModal(meta.label, rows.length + ' แห่ง · คลิกชื่อหน่วยบริการเพื่อดูรายละเอียดเต็ม', html);
+  }
+
+  function openTeamModal(teamName, codes) {
+    var rows = codes.map(function (code) { return [code, FACILITY_DATA[code]]; }).filter(function (r) { return r[1]; });
+    var cols = ['จังหวัด', 'ชื่อหน่วยบริการ', 'เกณฑ์ที่เข้า', 'รายได้ผลก.ย.69', 'รายได้%ผลต่าง', 'ค่าใช้จ่ายผลก.ย.69', 'ค่าใช้จ่าย%ผลต่าง', 'EBITDA ผลก.ย.69', 'EBITDA แผน70', 'Risk'];
+    var trs = rows.map(function (r) {
+      var code = r[0], f = r[1];
+      var crits = [1, 2, 3, 4].filter(function (n) { return f['c' + n] === 1; }).join(',');
+      return '<tr class="clickable" data-code="' + code + '"><td>' + f.prov + '</td><td>' + f.name + '</td><td>' + crits + '</td>'
+        + '<td class="num">' + fmtBaht(f.revAct) + '</td><td class="num' + negClass(f.revPct) + '">' + fmtPct(f.revPct) + '</td>'
+        + '<td class="num">' + fmtBaht(f.expAct) + '</td><td class="num' + negClass(f.expPct) + '">' + fmtPct(f.expPct) + '</td>'
+        + '<td class="num' + negClass(f.ebitdaAct) + '">' + fmtBaht(f.ebitdaAct) + '</td>'
+        + '<td class="num' + negClass(f.ebitdaPlan70) + '">' + fmtBaht(f.ebitdaPlan70) + '</td>'
+        + '<td class="num">' + f.risk + '</td></tr>';
+    });
+    var html = '<div class="modal-table-wrap"><table class="modal-table"><thead><tr>' + cols.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr></thead><tbody>' + trs.join('') + '</tbody></table></div>';
+    openModal(teamName, rows.length + ' แห่งที่ต้องตรวจ · คลิกชื่อหน่วยบริการเพื่อดูรายละเอียดเต็ม', html);
+  }
+
+  // criteria cards
+  document.querySelectorAll('.crit-card[data-crit]').forEach(function (card) {
+    function trigger() { openCriteriaModal(parseInt(card.dataset.crit, 10)); }
+    card.addEventListener('click', trigger);
+    card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); } });
+  });
+
+  // facility name cells (event delegation, covers team tables + modal-generated tables)
+  document.addEventListener('click', function (e) {
+    var nameCell = e.target.closest('td.name-cell');
+    if (nameCell) {
+      var tds = nameCell.parentElement.querySelectorAll('td');
+      var code = tds[2] ? tds[2].textContent.trim() : null;
+      if (code && FACILITY_DATA[code]) openFacilityModal(code);
+      return;
+    }
+    var modalRow = e.target.closest('.modal-table tr[data-code]');
+    if (modalRow) {
+      openFacilityModal(modalRow.dataset.code);
+    }
+  });
+
+  // team section headers
+  document.querySelectorAll('.team-sec-head').forEach(function (head) {
+    function trigger() {
+      var section = head.closest('.team-section');
+      var teamName = section.dataset.team;
+      var codes = Array.from(section.querySelectorAll('tbody tr[data-rank] td:nth-child(3)')).map(function (td) { return td.textContent.trim(); });
+      openTeamModal(teamName, codes);
+    }
+    head.addEventListener('click', trigger);
+    head.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); } });
+  });
 
   var exportBtn = document.getElementById('exportBtn');
   var exportLabel = exportBtn.innerHTML;
