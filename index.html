@@ -627,6 +627,41 @@
   .modal-table td.neg{ color:var(--red); }
   .modal-table tr.clickable{ cursor:pointer; }
   .modal-table tr.clickable:hover td{ background:var(--navy-tint); }
+
+  /* ===== กลุ่มเป้าหมายนำเสนอ 20 แห่ง (prefix tg-) ===== */
+  .tg-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+  .tg-stat{ background:var(--navy-tint); border-radius:4px; padding:12px 14px; border-left:3px solid var(--navy); }
+  .tg-stat b{ display:block; font-family:"Prompt",sans-serif; font-weight:800; font-size:24px; line-height:1.15;
+              color:var(--navy-ink); font-variant-numeric:tabular-nums; }
+  .tg-stat span{ font-size:11.5px; color:var(--ink-soft); line-height:1.35; display:block; }
+  .tg-teams{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .tg-team{ border:1px solid var(--line); border-radius:4px; overflow:hidden; cursor:pointer; background:var(--paper); }
+  .tg-team:hover{ border-color:var(--navy); box-shadow:0 2px 8px rgba(21,49,74,.10); }
+  .tg-team-head{ background:var(--navy-ink); color:#fff; padding:7px 10px; display:flex;
+                 align-items:baseline; justify-content:space-between; gap:6px;
+                 font-family:"Prompt",sans-serif; font-weight:600; font-size:12.5px; }
+  .tg-team-head em{ font-style:normal; font-weight:500; font-size:10px; opacity:.82; }
+  .tg-team ul{ margin:0; padding:8px 10px; list-style:none; }
+  .tg-team li{ font-size:11.5px; line-height:1.6; color:var(--ink); display:flex;
+               justify-content:space-between; gap:8px; }
+  .tg-team li i{ font-style:normal; color:var(--ink-faint); font-size:10.5px; flex-shrink:0; }
+  .tg-table col.tg-c-time{ width:92px; }
+  .tg-table col.tg-c-prov{ width:92px; }
+  .tg-table col.tg-c-code{ width:58px; }
+  .tg-table col.tg-c-name{ width:370px; }
+  .tg-table col.tg-c-sev{ width:54px; }
+  .tg-table col.tg-c-crit{ width:92px; }
+  .tg-table col.tg-c-lvl{ width:50px; }
+  .tg-table col.tg-c-risk{ width:66px; }
+  .tg-table col.tg-c-team{ width:94px; }
+  .tg-table tbody tr.tg-row{ cursor:pointer; }
+  .tg-table tbody tr.tg-row:hover td{ background:var(--navy-tint); }
+  .tg-table td.tg-time{ font-variant-numeric:tabular-nums; font-weight:600; color:var(--navy); }
+  .tg-table td.tg-ord{ color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+  .tg-table tr.tg-break td{ background:var(--canvas); color:var(--ink-faint); font-size:11.5px;
+                            text-align:center; font-weight:600; }
+  .tg-note{ font-size:11.5px; color:var(--ink-faint); margin:10px 0 0; }
+  .tg-star{ color:var(--orange); font-weight:700; margin-right:4px; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap">
@@ -653,6 +688,76 @@
         <span class="stat-label">แห่ง เข้าครบทั้ง 4 ข้อ —<br><b>ไม่มี รพ. ใดเข้าเกณฑ์ครบทุกข้อ</b></span>
       </div>
     </div>
+
+
+    <!-- ===== 1. TARGET GROUP 20 (กลุ่มเป้าหมายนำเสนอ) ===== -->
+    <section id="target20">
+      <div class="sec-head">
+        <h2 class="sec-title">กลุ่มเป้าหมายนำเสนอ 20 แห่ง</h2>
+        <p class="sec-sub">คัดจาก 55 แห่งที่เข้าเกณฑ์ · ให้ครบทุกจังหวัดรับตรวจ และเกลี่ยทีมตรวจทีมละ 5 แห่ง</p>
+      </div>
+
+      <div class="tg-stats">
+        <div class="tg-stat"><b>20</b><span>แห่งที่นำเสนอ<br>จาก 55 แห่งที่เข้าเกณฑ์</span></div>
+        <div class="tg-stat"><b>8</b><span>จังหวัดรับตรวจ<br>ครบทุกจังหวัดในเขต</span></div>
+        <div class="tg-stat"><b>5</b><span>แห่งต่อทีม<br>ทีมตรวจ 4 ทีม เท่ากันทุกทีม</span></div>
+        <div class="tg-stat"><b>15</b><span>นาทีต่อแห่ง<br>08.45 – 15.15 น.</span></div>
+      </div>
+
+      <div class="tg-teams">
+        <div class="tg-team" role="button" tabindex="0" data-team="ทีมเชียงใหม่" data-codes="40744,11147,11142,11205,11172">
+          <div class="tg-team-head"><span>ทีมเชียงใหม่</span><em>5 แห่ง</em></div>
+          <ul><li><span>รพ.ภูซาง</span><i>พะเยา</i></li><li><span>รพ.เกาะคา</span><i>ลำปาง</i></li><li><span>รพ.ลี้</span><i>ลำพูน</i></li><li><span>รพ.แม่สะเรียง</span><i>แม่ฮ่องสอน</i></li><li><span>รพ.หนองม่วงไข่</span><i>แพร่</i></li></ul>
+        </div>
+        <div class="tg-team" role="button" tabindex="0" data-team="ทีมน่าน" data-codes="11132,11643,11186,11149,11169">
+          <div class="tg-team-head"><span>ทีมน่าน</span><em>5 แห่ง</em></div>
+          <ul><li><span>รพ.ฮอด</span><i>เชียงใหม่</i></li><li><span>รพ.ดอยหล่อ</span><i>เชียงใหม่</i></li><li><span>รพ.ดอกคำใต้</span><i>พะเยา</i></li><li><span>รพ.งาว</span><i>ลำปาง</i></li><li><span>รพ.สูงเม่น</span><i>แพร่</i></li></ul>
+        </div>
+        <div class="tg-team" role="button" tabindex="0" data-team="ทีมพะเยา" data-codes="11131,11151,11176,11207,11202">
+          <div class="tg-team-head"><span>ทีมพะเยา</span><em>5 แห่ง</em></div>
+          <ul><li><span>รพ.หางดง</span><i>เชียงใหม่</i></li><li><span>รพ.วังเหนือ</span><i>ลำปาง</i></li><li><span>รพ.ท่าวังผา</span><i>น่าน</i></li><li><span>รพ.สบเมย</span><i>แม่ฮ่องสอน</i></li><li><span>รพ.เวียงเชียงรุ้ง</span><i>เชียงราย</i></li></ul>
+        </div>
+        <div class="tg-team" role="button" tabindex="0" data-team="ทีมลำปาง" data-codes="11181,11177,11140,24956,11198">
+          <div class="tg-team-head"><span>ทีมลำปาง</span><em>5 แห่ง</em></div>
+          <ul><li><span>รพ.สันติสุข</span><i>น่าน</i></li><li><span>รพ.เวียงสา</span><i>น่าน</i></li><li><span>รพ.แม่ทา</span><i>ลำพูน</i></li><li><span>รพ.เวียงหนองล่อง</span><i>ลำพูน</i></li><li><span>รพ.เวียงแก่น</span><i>เชียงราย</i></li></ul>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table tg-table">
+          <colgroup><col class="tg-c-time"><col class="tg-c-prov"><col class="tg-c-code"><col class="tg-c-name"><col class="tg-c-sev"><col class="tg-c-crit"><col class="tg-c-lvl"><col class="tg-c-risk"><col class="tg-c-team"></colgroup>
+          <thead><tr><th>เวลา</th><th>จังหวัดรับตรวจ</th><th>รหัส</th><th>ชื่อหน่วยบริการ</th><th class="ctr">จำนวน<br>ที่เข้า</th><th>เกณฑ์ที่เข้า</th><th class="ctr">ระดับ</th><th class="num">ลำดับ<br>เสี่ยง</th><th>ทีมตรวจ</th></tr></thead>
+          <tbody>
+              <tr class="tg-row" data-code="11132"><td class="tg-time">08.45 – 09.00</td><td>เชียงใหม่</td><td>11132</td><td class="name-cell"><span class="tg-ord">1.</span> โรงพยาบาลฮอด</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">1</td><td>น่าน</td></tr>
+              <tr class="tg-row" data-code="11131"><td class="tg-time">09.00 – 09.15</td><td>เชียงใหม่</td><td>11131</td><td class="name-cell"><span class="tg-ord">2.</span> โรงพยาบาลหางดง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">M2</td><td class="num">5</td><td>พะเยา</td></tr>
+              <tr class="tg-row" data-code="11643"><td class="tg-time">09.15 – 09.30</td><td>เชียงใหม่</td><td>11643</td><td class="name-cell"><span class="tg-ord">3.</span> โรงพยาบาลดอยหล่อ</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">8</td><td>น่าน</td></tr>
+              <tr class="tg-row" data-code="11181"><td class="tg-time">09.30 – 09.45</td><td>น่าน</td><td>11181</td><td class="name-cell"><span class="tg-ord">4.</span> โรงพยาบาลสันติสุข</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">3</td><td>ลำปาง</td></tr>
+              <tr class="tg-row" data-code="11176"><td class="tg-time">09.45 – 10.00</td><td>น่าน</td><td>11176</td><td class="name-cell"><span class="tg-ord">5.</span> โรงพยาบาลท่าวังผา</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">11</td><td>พะเยา</td></tr>
+              <tr class="tg-row" data-code="11177"><td class="tg-time">10.00 – 10.15</td><td>น่าน</td><td>11177</td><td class="name-cell"><span class="tg-ord">6.</span> โรงพยาบาลเวียงสา</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">15</td><td>ลำปาง</td></tr>
+              <tr class="tg-break"><td colspan="9">10.15 – 10.30 น.  เบรกเช้า</td></tr>
+              <tr class="tg-row" data-code="11186"><td class="tg-time">10.30 – 10.45</td><td>พะเยา</td><td>11186</td><td class="name-cell"><span class="tg-ord">7.</span> โรงพยาบาลดอกคำใต้</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">16</td><td>น่าน</td></tr>
+              <tr class="tg-row" data-code="40744"><td class="tg-time">10.45 – 11.00</td><td>พะเยา</td><td>40744</td><td class="name-cell"><span class="tg-ord">8.</span> โรงพยาบาลภูซาง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i></span></td><td class="ctr">F3</td><td class="num">25</td><td>เชียงใหม่</td></tr>
+              <tr class="tg-row" data-code="11147"><td class="tg-time">11.00 – 11.15</td><td>ลำปาง</td><td>11147</td><td class="name-cell"><span class="tg-ord">9.</span> โรงพยาบาลเกาะคา</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">M1</td><td class="num">17</td><td>เชียงใหม่</td></tr>
+              <tr class="tg-row" data-code="11149"><td class="tg-time">11.15 – 11.30</td><td>ลำปาง</td><td>11149</td><td class="name-cell"><span class="tg-ord">10.</span> โรงพยาบาลงาว</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">18</td><td>น่าน</td></tr>
+              <tr class="tg-row" data-code="11151"><td class="tg-time">11.30 – 11.45</td><td>ลำปาง</td><td>11151</td><td class="name-cell"><span class="tg-ord">11.</span> โรงพยาบาลวังเหนือ</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">19</td><td>พะเยา</td></tr>
+              <tr class="tg-row" data-code="11169"><td class="tg-time">11.45 – 12.00</td><td>แพร่</td><td>11169</td><td class="name-cell"><span class="tg-ord">12.</span> โรงพยาบาลสูงเม่น</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">2</i></span></td><td class="ctr">F1</td><td class="num">39</td><td>น่าน</td></tr>
+              <tr class="tg-break"><td colspan="9">12.00 – 13.00 น.  พักเที่ยง</td></tr>
+              <tr class="tg-row" data-code="11172"><td class="tg-time">13.00 – 13.15</td><td>แพร่</td><td>11172</td><td class="name-cell"><span class="tg-ord">13.</span> โรงพยาบาลหนองม่วงไข่</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">1</i></span></td><td class="ctr">F2</td><td class="num">51</td><td>เชียงใหม่</td></tr>
+              <tr class="tg-row" data-code="11140"><td class="tg-time">13.15 – 13.30</td><td>ลำพูน</td><td>11140</td><td class="name-cell"><span class="tg-ord">14.</span> โรงพยาบาลแม่ทา</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">3</i></span></td><td class="ctr">F2</td><td class="num">10</td><td>ลำปาง</td></tr>
+              <tr class="tg-row" data-code="11142"><td class="tg-time">13.30 – 13.45</td><td>ลำพูน</td><td>11142</td><td class="name-cell"><span class="tg-ord">15.</span> โรงพยาบาลลี้</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">13</td><td>เชียงใหม่</td></tr>
+              <tr class="tg-row" data-code="24956"><td class="tg-time">13.45 – 14.00</td><td>ลำพูน</td><td>24956</td><td class="name-cell"><span class="tg-ord">16.</span> โรงพยาบาลเวียงหนองล่อง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">20</td><td>ลำปาง</td></tr>
+              <tr class="tg-break"><td colspan="9">14.00 – 14.15 น.  เบรกบ่าย</td></tr>
+              <tr class="tg-row" data-code="11207"><td class="tg-time">14.15 – 14.30</td><td>แม่ฮ่องสอน</td><td>11207</td><td class="name-cell"><span class="tg-ord">17.</span> โรงพยาบาลสบเมย</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">2</td><td>พะเยา</td></tr>
+              <tr class="tg-row" data-code="11205"><td class="tg-time">14.30 – 14.45</td><td>แม่ฮ่องสอน</td><td>11205</td><td class="name-cell"><span class="tg-ord">18.</span> โรงพยาบาลแม่สะเรียง</td><td class="ctr"><i class="sev-chip" style="background:var(--orange)">2</i></td><td><span class="crit-pills"><i class="pill">3</i><i class="pill">4</i></span></td><td class="ctr">M2</td><td class="num">9</td><td>เชียงใหม่</td></tr>
+              <tr class="tg-row" data-code="11198"><td class="tg-time">14.45 – 15.00</td><td>เชียงราย</td><td>11198</td><td class="name-cell"><span class="tg-ord">19.</span> โรงพยาบาลเวียงแก่น</td><td class="ctr"><i class="sev-chip" style="background:var(--red)">3</i></td><td><span class="crit-pills"><i class="pill">1</i><i class="pill">2</i><i class="pill">4</i></span></td><td class="ctr">F1</td><td class="num">4</td><td>ลำปาง</td></tr>
+              <tr class="tg-row" data-code="11202"><td class="tg-time">15.00 – 15.15</td><td>เชียงราย</td><td>11202</td><td class="name-cell"><span class="tg-ord">20.</span> โรงพยาบาลเวียงเชียงรุ้ง</td><td class="ctr"><i class="sev-chip" style="background:var(--yellow)">1</i></td><td><span class="crit-pills"><i class="pill">4</i></span></td><td class="ctr">F2</td><td class="num">23</td><td>พะเยา</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tg-note">คลิกแถวเพื่อดูตัวเลขเต็มรายแห่ง · คลิกการ์ดทีมเพื่อดูสรุปทั้งทีม · "ลำดับเสี่ยง" คืออันดับในรายชื่อ 55 แห่งด้านล่าง</p>
+    </section>
+
+    <div class="rule"></div>
 
     <!-- ===== 2. CRITERIA ===== -->
     <section>
@@ -760,7 +865,7 @@
     <section>
       <div class="sec-head">
         <h2 class="sec-title">รายชื่อหน่วยบริการที่เข้าเกณฑ์ (55 แห่ง)</h2>
-        <p class="sec-sub">จัดกลุ่มตามทีมตรวจ · เรียงตามคะแนน: น้ำหนักข้อ 4&gt;3&gt;2&gt;1 × ตัวคูณเมื่อเข้าหลายเกณฑ์</p>
+        <p class="sec-sub">ฐานการคัดกรองทั้งหมด · ★ = อยู่ในกลุ่มนำเสนอ 20 แห่ง · จัดกลุ่มตามทีมตรวจ · เรียงตามคะแนน: น้ำหนักข้อ 4&gt;3&gt;2&gt;1 × ตัวคูณเมื่อเข้าหลายเกณฑ์</p>
       </div>
       <div class="bar-legend">
         <span><i class="dot" style="background:var(--red)"></i>เข้า 3 ข้อ</span>
@@ -769,10 +874,9 @@
       </div>
       <div class="filter-bar">
         <span class="filter-label">แสดง:</span>
-        <button class="filter-btn active" type="button" data-n="20">20 แห่ง</button>
         <button class="filter-btn" type="button" data-n="30">30 แห่ง</button>
         <button class="filter-btn" type="button" data-n="40">40 แห่ง</button>
-        <button class="filter-btn" type="button" data-n="55">ทั้งหมด (55)</button>
+        <button class="filter-btn active" type="button" data-n="55">ทั้งหมด (55)</button>
         <span class="filter-spacer"></span>
         <button class="export-btn" type="button" id="exportBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
@@ -975,7 +1079,7 @@
 
     <!-- ===== FOOTER ===== -->
     <div class="footer" style="border-top:1px solid var(--line); margin:0 56px;">
-      <p class="src">แหล่งข้อมูล: ระบบ Planfin กองเศรษฐกิจสุขภาพ (HFO) ณ 9–11 ต.ค. 2569 (รพ.ท่าวังผา ปรับแผนใหม่ 11 ต.ค. 69) · ระบบ 7 Risk Scoring เขตสุขภาพที่ 1 ณ ก.ย. 2569 (รายงานออก 11 ต.ค. 69, 103 หน่วยบริการ)</p>
+      <p class="src">แหล่งข้อมูล: สรุปกลุ่มเป้าหมาย Rev02.xlsx (กลุ่มนำเสนอ 20 แห่ง + กำหนดการ) · ระบบ Planfin กองเศรษฐกิจสุขภาพ (HFO) ณ 9–11 ต.ค. 2569 (รพ.ท่าวังผา ปรับแผนใหม่ 11 ต.ค. 69) · ระบบ 7 Risk Scoring เขตสุขภาพที่ 1 ณ ก.ย. 2569 (รายงานออก 11 ต.ค. 69, 103 หน่วยบริการ)</p>
       <p class="note">คณะกรรมการตรวจสอบ ไม่เกินตามที่กำหนด<br>สามารถลดจำนวนต่อทีมได้ตามลำดับ</p>
     </div>
 
@@ -1018,7 +1122,7 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       applyFilter(parseInt(btn.dataset.n, 10));
     });
   });
-  applyFilter(20);   // ค่าเริ่มต้น: แสดง 20 อันดับแรก
+  applyFilter(55);   // ค่าเริ่มต้น: แสดงครบ 55 แห่ง (กลุ่มนำเสนอ 20 แห่งอยู่ส่วนบนสุดแล้ว)
 
   // ---------- modal (criteria / facility / team drill-down) ----------
   var CRIT_META = {
@@ -1177,9 +1281,9 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       if (code && FACILITY_DATA[code]) openFacilityModal(code);
       return;
     }
-    var modalRow = e.target.closest('.modal-table tr[data-code]');
-    if (modalRow) {
-      openFacilityModal(modalRow.dataset.code);
+    var codeRow = e.target.closest('tr[data-code]');
+    if (codeRow && FACILITY_DATA[codeRow.dataset.code]) {
+      openFacilityModal(codeRow.dataset.code);
     }
   });
 
@@ -1193,6 +1297,26 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
     }
     head.addEventListener('click', trigger);
     head.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); } });
+  });
+
+
+  // ---------- กลุ่มเป้าหมายนำเสนอ 20 แห่ง ----------
+  var SELECTED_20 = ['11132', '11131', '11643', '11181', '11176', '11177', '11186', '40744', '11147', '11149', '11151', '11169', '11172', '11140', '11142', '24956', '11207', '11205', '11198', '11202'];
+  document.querySelectorAll('.tg-team').forEach(function (card) {
+    function trigger() { openTeamModal(card.dataset.team + ' · กลุ่มนำเสนอ', card.dataset.codes.split(',')); }
+    card.addEventListener('click', trigger);
+    card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); } });
+  });
+  // ติดดาวในตาราง 55 แห่ง ให้แห่งที่อยู่ในกลุ่มนำเสนอ
+  document.querySelectorAll('.team-section tbody tr[data-rank]').forEach(function (tr) {
+    var tds = tr.querySelectorAll('td');
+    if (!tds[2] || !tds[3]) return;
+    if (SELECTED_20.indexOf(tds[2].textContent.trim()) === -1) return;
+    var star = document.createElement('span');
+    star.className = 'tg-star';
+    star.textContent = '\u2605';
+    star.title = 'อยู่ในกลุ่มนำเสนอ 20 แห่ง';
+    tds[3].insertBefore(star, tds[3].firstChild);
   });
 
   var exportBtn = document.getElementById('exportBtn');
