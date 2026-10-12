@@ -769,10 +769,10 @@
       </div>
       <div class="filter-bar">
         <span class="filter-label">แสดง:</span>
-        <button class="filter-btn" type="button" data-n="20">20 แห่ง</button>
+        <button class="filter-btn active" type="button" data-n="20">20 แห่ง</button>
         <button class="filter-btn" type="button" data-n="30">30 แห่ง</button>
         <button class="filter-btn" type="button" data-n="40">40 แห่ง</button>
-        <button class="filter-btn active" type="button" data-n="55">ทั้งหมด (55)</button>
+        <button class="filter-btn" type="button" data-n="55">ทั้งหมด (55)</button>
         <span class="filter-spacer"></span>
         <button class="export-btn" type="button" id="exportBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
@@ -1018,7 +1018,7 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       applyFilter(parseInt(btn.dataset.n, 10));
     });
   });
-  applyFilter(55);
+  applyFilter(20);   // ค่าเริ่มต้น: แสดง 20 อันดับแรก
 
   // ---------- modal (criteria / facility / team drill-down) ----------
   var CRIT_META = {
