@@ -700,7 +700,33 @@
   .dr-spark{ display:inline-flex; align-items:flex-end; gap:2px; height:15px; vertical-align:-2px; margin-right:5px; }
   .dr-spark i{ width:4px; background:var(--navy); opacity:.55; border-radius:1px 1px 0 0; }
   .dr-spark i.last{ opacity:1; background:var(--orange); }
+  /* ไฮไลต์จุดเปลี่ยนแปลงที่มีนัยสำคัญ */
+  .dr-flag{ display:inline-flex; align-items:center; gap:3px; margin-top:3px; padding:1px 7px; border-radius:20px;
+            font-size:10px; font-weight:600; line-height:1.6; cursor:help; white-space:nowrap; max-width:100%; overflow:hidden; }
+  .dr-flag.dr-sev2{ background:#FDE7E4; color:#A32B1C; border:1px solid #F3BFB7; }
+  .dr-flag.dr-sev1{ background:#FFF3DC; color:#8A5B12; border:1px solid #F0DCA8; }
+  .dr-flag:focus-visible{ outline:2px solid var(--navy); outline-offset:1px; }
+  tr.dr-row-sev2 > td:first-child{ box-shadow:inset 3px 0 0 var(--red); }
+  tr.dr-row-sev1 > td:first-child{ box-shadow:inset 3px 0 0 #E0A93B; }
+  tr.dr-row-sev2 > td{ background:#FFFaf9; }
+  .dr-legend{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; font-size:11px; color:var(--muted); margin:9px 0 2px; }
+  .dr-legend .dr-flag{ cursor:default; margin:0; }
+  .dr-sum{ background:linear-gradient(180deg,#F7FAFD,#EEF4F9); border:1px solid #CFE0EE; border-left:3px solid var(--navy);
+           border-radius:8px; padding:10px 13px; margin:10px 0 4px; }
+  .dr-sum-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:12.2px; color:var(--navy-ink); margin-bottom:5px; }
+  .dr-sum ol{ margin:0; padding-left:19px; }
+  .dr-sum li{ font-size:11.8px; line-height:1.65; margin-bottom:4px; overflow-wrap:anywhere; }
+  .dr-sum .drt-why{ color:var(--muted); font-size:11px; }
+  .dr-tip{ position:fixed; z-index:9999; max-width:330px; background:#fff; border:1px solid var(--line);
+           border-left:3px solid var(--navy); border-radius:8px; box-shadow:0 8px 26px rgba(16,34,51,.19);
+           padding:10px 12px; font-size:11.8px; line-height:1.6; color:var(--ink); overflow-wrap:anywhere; pointer-events:none; }
+  .drt-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:12px; color:var(--navy-ink); margin-bottom:1px; }
+  .drt-sub{ font-size:10.5px; color:var(--muted); margin-bottom:6px; }
+  .drt-i{ padding:6px 0; border-top:1px dashed var(--line); }
+  .drt-i:first-of-type{ border-top:none; padding-top:0; }
+  .drt-why{ color:var(--muted); font-size:11px; }
   @media (max-width:760px){
+    .dr-tip{ max-width:min(330px, calc(100vw - 20px)); font-size:11.3px; }
     .dr-table{ font-size:11px; }
     .dr-table th, .dr-table td{ padding:5px 6px; }
     .dr-table td:first-child{ min-width:120px; }
@@ -1245,6 +1271,121 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       return drSpark(vals) + '<span class="' + cls + '">' + arrow + ' ' + (p > 0 ? '+' : '') + (p * 100).toFixed(1) + '%</span>';
     }
 
+    /* ---------- วิเคราะห์จุดเปลี่ยนแปลงที่มีนัยสำคัญ + tooltip ---------- */
+    var DRTIPS = {}, drTipSeq = 0;
+    function drMkTip(html) { var k = 't' + (++drTipSeq); DRTIPS[k] = html; return k; }
+    function drPc(x) { return (x > 0 ? '+' : '') + (x * 100).toFixed(1) + '%'; }
+    function drBn(x) { var a = Math.abs(x); return (x < 0 ? '−' : '+') + (a >= 1e6 ? (a / 1e6).toFixed(1) + ' ลบ.' : fmtBaht(a) + ' บ.'); }
+
+    /* คืน {sev:0|1|2, badge, tip} — sev 2 = เปลี่ยนแรงมาก, 1 = ควรดู */
+    function drAnalyse(o) {
+      var G = Math.abs(o.groupTot || 0), lines = [], sev = 0, heads = [];
+      function rel(d) { return G ? Math.abs(d) / G : 0; }
+      var wMax = 0;
+      function note(h, body, r) {
+        var s = (Math.abs(r) >= 0.03) ? 2 : 1;
+        if (s > sev) sev = s;
+        if (Math.abs(r) > wMax) wMax = Math.abs(r);
+        heads.push(h); lines.push(body);
+      }
+      var isRev = o.kind === 1;
+
+      /* 1) แผน 70 เทียบผลล่าสุดเต็มปี */
+      if (o.p70 !== null && o.p70 !== undefined && o.base !== null && o.base !== undefined && o.base !== 0) {
+        var d1 = o.p70 - o.base, p1 = d1 / Math.abs(o.base), r1 = rel(d1);
+        if (Math.abs(p1) >= 0.2 && r1 >= 0.01) {
+          var up = d1 > 0;
+          var warn = o.budget
+            ? 'เป็นงบประมาณที่รัฐจัดสรร ความผันผวนรายปีเป็นเรื่องปกติ — ควรยืนยันว่ามีกรอบงบจริงตามที่ตั้งไว้ ไม่ใช่ประมาณการเอง'
+            : isRev
+            ? (up ? 'ตั้งแผนรายได้ปี 70 สูงกว่าที่ทำได้จริงมาก — ต้องมีเหตุผลรองรับว่าเงินจะมาจากไหน'
+                  : 'ตั้งแผนรายได้ปี 70 ต่ำกว่าที่ทำได้จริงมาก — อาจตั้งต่ำเกินจนแผนดูสวย')
+            : (up ? 'ตั้งแผนค่าใช้จ่ายปี 70 สูงขึ้นมาก — ตรวจว่าเป็นภาระผูกพันจริงหรือเผื่อไว้'
+                  : 'ตั้งแผนค่าใช้จ่ายปี 70 ต่ำกว่าที่จ่ายจริงมาก — เสี่ยงตั้งต่ำกว่าความเป็นจริง');
+          note('แผน 70', '<b>แผน 70 เทียบ ' + o.baseLabel + '</b> ' + drPc(p1) + ' (' + drBn(d1) + ')<br>'
+            + '<span class="drt-why">' + warn + '</span>', r1);
+        }
+      }
+      /* 2) ผล 69 หลุดจากแผน 69 (เกณฑ์ข้อ 1) */
+      if (o.p69 !== null && o.p69 !== undefined && o.p69 !== 0 && o.a69 !== null && o.a69 !== undefined) {
+        var d2 = o.a69 - o.p69, p2 = d2 / Math.abs(o.p69), r2 = rel(d2);
+        if (Math.abs(p2) >= 0.2 && r2 >= 0.01) {
+          note('ผล 69 vs แผน', '<b>ผล ก.ย. 69 เทียบแผน 69</b> ' + drPc(p2) + ' (' + drBn(d2) + ')<br>'
+            + '<span class="drt-why">' + (isRev
+              ? (d2 < 0 ? 'ทำรายได้ไม่ถึงแผน เป็นส่วนหนึ่งที่ทำให้ผลเทียบแผนหลุดเกิน ±5%'
+                        : 'ทำรายได้เกินแผนมาก — แผนปี 69 อาจตั้งต่ำเกินจริง')
+              : (d2 > 0 ? 'ใช้จ่ายเกินแผน ต้องดูว่าเป็นรายการใดและคุมได้หรือไม่'
+                        : 'ใช้จ่ายต่ำกว่าแผนมาก อาจชะลอการใช้จ่ายหรือแผนตั้งสูงเกิน')) + '</span>', r2);
+        }
+      }
+      /* 3) เทรนด์ผลจริง */
+      if (o.a67 !== null && o.a67 !== undefined && o.a67 !== 0 && o.aLast !== null && o.aLast !== undefined) {
+        var d3 = o.aLast - o.a67, p3 = d3 / Math.abs(o.a67), r3 = rel(d3);
+        if (Math.abs(p3) >= 0.2 && r3 >= 0.015) {
+          note('เทรนด์', '<b>เทรนด์ผลจริง 67 → ' + o.lastLabel + '</b> ' + drPc(p3) + ' (' + drBn(d3) + ')<br>'
+            + '<span class="drt-why">' + (isRev
+              ? (d3 > 0 ? 'รายได้โตต่อเนื่อง' : 'รายได้ลดต่อเนื่อง เป็นสัญญาณเชิงโครงสร้าง')
+              : (d3 > 0 ? 'รายจ่ายโตต่อเนื่อง ถ้าโตเร็วกว่ารายได้จะกดดัน EBITDA' : 'รายจ่ายลดลงต่อเนื่อง')) + '</span>', r3);
+        }
+      }
+      if (!sev) return null;
+      var share = G ? (Math.abs(o.p70 !== null && o.p70 !== undefined ? o.p70 : (o.aLast || 0)) / G) : 0;
+      var tip = '<div class="drt-h">' + o.title + '</div>'
+        + '<div class="drt-sub">คิดเป็น ' + (share * 100).toFixed(1) + '% ของ' + (isRev ? 'รายได้รวม' : 'ค่าใช้จ่ายรวม') + '</div>'
+        + lines.map(function (l) { return '<div class="drt-i">' + l + '</div>'; }).join('');
+      return { sev: sev, heads: heads, tip: tip, w: wMax, title: o.title, first: lines[0] };
+    }
+
+    function drFlagHtml(an) {
+      if (!an) return '';
+      return '<span class="dr-flag dr-sev' + an.sev + '" data-drtip="' + drMkTip(an.tip) + '" tabindex="0">'
+        + (an.sev === 2 ? '⚑' : '•') + ' ' + an.heads.join(' · ') + '</span>';
+    }
+
+    /* tooltip ลอย */
+    var tipEl = null;
+    function drShowTip(target) {
+      var k = target.getAttribute('data-drtip');
+      if (!DRTIPS[k]) return;
+      if (!tipEl) { tipEl = document.createElement('div'); tipEl.className = 'dr-tip'; document.body.appendChild(tipEl); }
+      tipEl.innerHTML = DRTIPS[k];
+      tipEl.style.visibility = 'hidden';
+      tipEl.hidden = false;
+      var r = target.getBoundingClientRect(), tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
+      var left = Math.min(Math.max(8, r.left), window.innerWidth - tw - 8);
+      var top = (r.top - th - 9 >= 8) ? (r.top - th - 9) : (r.bottom + 9);
+      tipEl.style.left = left + 'px';
+      tipEl.style.top = top + 'px';
+      tipEl.style.visibility = 'visible';
+    }
+    function drHideTip() { if (tipEl) tipEl.hidden = true; }
+    document.addEventListener('mouseover', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-drtip]') : null;
+      if (t) drShowTip(t);
+    });
+    document.addEventListener('mouseout', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-drtip]') : null;
+      if (t) drHideTip();
+    });
+    document.addEventListener('focusin', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-drtip]') : null;
+      if (t) drShowTip(t);
+    });
+    document.addEventListener('scroll', drHideTip, true);
+    window.addEventListener('resize', drHideTip);
+    /* มือถือ: แตะที่ป้ายเพื่อเปิด/ปิด และกันไม่ให้ไปสั่งกาง-ยุบแถว */
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-drtip]') : null;
+      if (t) {
+        e.stopPropagation();
+        if (tipEl && !tipEl.hidden && tipEl.dataset.k === t.getAttribute('data-drtip')) { drHideTip(); return; }
+        drShowTip(t);
+        if (tipEl) tipEl.dataset.k = t.getAttribute('data-drtip');
+        return;
+      }
+      drHideTip();
+    }, true);
+
     /* ---------- ระดับ 3: บัญชีย่อยในหมวด ---------- */
     function drSubTable(code, pi) {
       var acc = DA[code] || {};
@@ -1258,9 +1399,16 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       });
       var h = '<table><thead><tr><th style="text-align:left">บัญชีย่อย</th>'
         + '<th>ผล 67</th><th>ผล 68</th><th>ผล ส.ค. 69</th><th>แผน 70</th><th>เทรนด์ผล 67→69</th></tr></thead><tbody>';
+      var gTot = 0;
+      list.forEach(function (ai) { gTot += Math.abs(acc[String(ai)][3] || acc[String(ai)][1] || 0); });
       list.forEach(function (ai) {
         var m = AMETA[ai], v = acc[String(ai)];
-        h += '<tr><td style="text-align:left"><span class="dr-acode">' + m[0] + '</span><br>' + (m[1] || '—') + '</td>'
+        var an = drAnalyse({
+          title: m[0] + ' ' + (m[1] || ''), kind: PLIST[pi][2], groupTot: gTot,
+          p70: v[3], base: v[1], baseLabel: 'ผล 68 (เต็มปี)', p69: null, a69: null,
+          a67: v[0], aLast: v[2], lastLabel: 'ส.ค. 69'
+        });
+        h += '<tr' + (an ? ' class="dr-row-sev' + an.sev + '"' : '') + '><td style="text-align:left"><span class="dr-acode">' + m[0] + '</span><br>' + (m[1] || '—') + drFlagHtml(an) + '</td>'
           + '<td>' + drNum(v[0]) + '</td><td>' + drNum(v[1]) + '</td><td>' + drNum(v[2]) + '</td>'
           + '<td><b>' + drNum(v[3]) + '</b></td>'
           + '<td>' + drTrend([v[0], v[1], v[2]]) + '</td></tr>';
@@ -1278,7 +1426,13 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       var html = '<button class="dr-back" data-drback="' + code + '">← กลับไปหน้าสรุป 4 เกณฑ์</button>';
       html += '<div class="dr-note">ปี 2569 ใช้ <b>ผล ณ ก.ย. (เต็มปี)</b> ตรงกับที่ใช้ตัดสินเกณฑ์ข้อ 1 · '
         + 'คลิกที่แถวหมวดเพื่อกางรายละเอียดบัญชีย่อย</div>';
+      html += '<div class="dr-legend"><span>จุดที่เปลี่ยนแปลงมีนัยสำคัญ:</span>'
+        + '<span class="dr-flag dr-sev2">⚑ เปลี่ยนแรง</span><span class="dr-flag dr-sev1">• ควรดู</span>'
+        + '<span>' + (matchMedia('(hover:none)').matches ? 'แตะที่ป้าย' : 'ชี้ที่ป้าย') + 'เพื่อดูบทวิเคราะห์ · '
+        + 'เกณฑ์: เปลี่ยน ≥20% และมีขนาด ≥1% ของยอดรวมกลุ่ม</span></div>';
+      html += '<!--DRSUM-->';
 
+      var allAn = [];
       [1, 0].forEach(function (kind) {
         var rows = [];
         PLIST.forEach(function (p, i) { if (p[2] === kind && dp[String(i)]) rows.push(i); });
@@ -1306,10 +1460,18 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
           var isTotal = (p[0] === 'P291' || p[0] === 'P292');
           if (isTotal) { v = calcTot; }
           var nSub = (BYP[i] || []).filter(function (ai) { return (DA[code] || {})[String(ai)]; }).length;
-          html += '<tr class="' + (isTotal ? 'dr-total' : 'dr-p') + '"' + (isTotal ? '' : ' data-drp="' + i + '" data-drcode="' + code + '"') + '>'
+          var an = isTotal ? null : drAnalyse({
+            title: p[0] + ' ' + p[1], kind: kind, budget: (p[0] === 'P11' || p[0] === 'P13'),
+            groupTot: Math.abs(calcTot[5] || calcTot[3] || 0),
+            p70: v[6], base: v[5], baseLabel: 'ผล ก.ย. 69', p69: v[4], a69: v[5],
+            a67: v[1], aLast: v[5], lastLabel: 'ก.ย. 69'
+          });
+          if (an) allAn.push(an);
+          html += '<tr class="' + (isTotal ? 'dr-total' : 'dr-p') + (an ? ' dr-row-sev' + an.sev : '') + '"' + (isTotal ? '' : ' data-drp="' + i + '" data-drcode="' + code + '"') + '>'
             + '<td>' + (isTotal ? '' : '<span class="dr-chev">▸</span>')
             + '<span class="dr-pcode">' + p[0] + '</span><span class="dr-pname">' + p[1] + '</span>'
-            + (isTotal ? '' : '<span class="dr-sub">' + (nSub ? nSub + ' บัญชีย่อย' : 'ยังขาดข้อมูลบัญชีย่อย') + '</span>') + '</td>'
+            + (isTotal ? '' : '<span class="dr-sub">' + (nSub ? nSub + ' บัญชีย่อย' : 'ยังขาดข้อมูลบัญชีย่อย') + '</span>')
+            + drFlagHtml(an) + '</td>'
             + '<td>' + drYearCell(v[0], v[1]) + '</td>'
             + '<td>' + drYearCell(v[2], v[3]) + '</td>'
             + '<td>' + drYearCell(v[4], v[5]) + '</td>'
@@ -1326,6 +1488,18 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
           }
         }
       });
+      if (allAn.length) {
+        allAn.sort(function (x, y) { return (y.sev - x.sev) || (y.w - x.w); });
+        var top = allAn.slice(0, 3).map(function (a) {
+          return '<li><b>' + a.title + '</b> — ' + a.first.replace(/<br>/g, ' · ') + '</li>';
+        }).join('');
+        var n2 = allAn.filter(function (a) { return a.sev === 2; }).length;
+        html = html.replace('<!--DRSUM-->',
+          '<div class="dr-sum"><div class="dr-sum-h">สรุปจุดที่ควรดู — พบ ' + allAn.length + ' หมวดที่เปลี่ยนแปลงมีนัยสำคัญ'
+          + (n2 ? ' (เปลี่ยนแรง ' + n2 + ')' : '') + '</div><ol>' + top + '</ol></div>');
+      } else {
+        html = html.replace('<!--DRSUM-->', '<div class="dr-sum"><div class="dr-sum-h">ไม่พบหมวดที่เปลี่ยนแปลงถึงเกณฑ์มีนัยสำคัญ</div></div>');
+      }
       return html;
     }
 
