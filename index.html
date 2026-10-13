@@ -2000,6 +2000,14 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
           row.querySelector('.dr-chev').textContent = '▸';
           return;
         }
+        /* accordion: กางได้ทีละหมวดเดียว — หุบหมวดที่เปิดค้างไว้ก่อน */
+        document.querySelectorAll('tr.dr-p.dr-open').forEach(function (o) {
+          var d = o.nextElementSibling;
+          if (d && d.classList.contains('dr-detail')) d.parentNode.removeChild(d);
+          o.classList.remove('dr-open');
+          var c = o.querySelector('.dr-chev');
+          if (c) c.textContent = '▸';
+        });
         var tr = document.createElement('tr');
         tr.className = 'dr-detail';
         var td = document.createElement('td');
