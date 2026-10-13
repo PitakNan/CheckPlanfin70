@@ -700,6 +700,8 @@
   .dr-spark{ display:inline-flex; align-items:flex-end; gap:2px; height:15px; vertical-align:-2px; margin-right:5px; }
   .dr-spark i{ width:4px; background:var(--navy); opacity:.55; border-radius:1px 1px 0 0; }
   .dr-spark i.last{ opacity:1; background:var(--orange); }
+  .dr-sorthint{ font-size:10.8px; color:var(--muted); margin:2px 0 4px; line-height:1.5; }
+  .dr-dpct{ font-size:10px; color:var(--muted); }
   /* กราฟรายเดือน */
   .mb-wrap{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:9px 11px; margin:8px 0 10px; }
   .mb-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:11.5px; color:var(--navy-ink); margin-bottom:5px; }
@@ -1487,6 +1489,16 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       drHideTip();
     }, true);
 
+    /* ส่วนต่าง แผน 70 − ผล 69 : สีตามว่าดีหรือร้ายต่อ รพ. */
+    function drDelta(d, base, isRev) {
+      if (!d) return '<span class="dr-miss">—</span>';
+      var bad = isRev ? (d < 0) : (d > 0);          /* รายได้ลด = ร้าย · ค่าใช้จ่ายเพิ่ม = ร้าย */
+      var pct = (base !== null && base !== undefined && base !== 0)
+        ? ' <span class="dr-dpct">(' + (d / Math.abs(base) > 0 ? '+' : '') + (d / Math.abs(base) * 100).toFixed(0) + '%)</span>'
+        : ' <span class="dr-dpct">(ใหม่)</span>';
+      return '<span class="' + (bad ? 'dr-neg' : 'dr-pos') + '"><b>' + drBn(d) + '</b></span>' + pct;
+    }
+
     /* ---------- กราฟรายเดือน 12 เดือน (Planfin HFA) ---------- */
     var MONLB = ['ต.ค.', 'พ.ย.', 'ธ.ค.', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.'];
     function drMonthly(code, pi) {
@@ -1563,13 +1575,25 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       if (!list.length) {
         return mon + '<div class="dr-note">ยังขาดข้อมูล — หมวดนี้ไม่มีรายละเอียดบัญชีย่อยในชุดข้อมูลปัจจุบัน</div>';
       }
+      /* เรียงตามส่วนต่าง "แผน 70 − ผล ก.ย. 69" เพื่อให้เห็นตัวการก่อน
+         รายได้   : ลดลงมากสุด → เพิ่มมากสุด
+         ค่าใช้จ่าย: เพิ่มมากสุด → ลดลงมากสุด */
+      var isRev = PLIST[pi][2] === 1;
+      function delta(ai) {
+        var v = acc[String(ai)];
+        return (v[3] === null || v[3] === undefined ? 0 : v[3]) - (v[2] === null || v[2] === undefined ? 0 : v[2]);
+      }
       list.sort(function (x, y) {
-        var vx = acc[String(x)][3] || 0, vy = acc[String(y)][3] || 0;
-        return Math.abs(vy) - Math.abs(vx);
+        var dx = delta(x), dy = delta(y);
+        if (dx !== dy) return isRev ? (dx - dy) : (dy - dx);
+        return Math.abs(acc[String(y)][3] || 0) - Math.abs(acc[String(x)][3] || 0);
       });
       var h = mon;
+      h += '<div class="dr-sorthint">เรียงตาม<b>ส่วนต่าง แผน 70 − ผล ก.ย. 69</b> — '
+        + (isRev ? 'รายได้ที่<b>หายไปมากสุด</b>อยู่บนสุด' : 'ค่าใช้จ่ายที่<b>เพิ่มมากสุด</b>อยู่บนสุด') + '</div>';
       h += '<table><thead><tr><th style="text-align:left">บัญชีย่อย</th>'
-        + '<th>ผล 67</th><th>ผล 68</th><th>ผล ก.ย. 69</th><th>แผน 70</th><th>เทรนด์ผล 67→69</th></tr></thead><tbody>';
+        + '<th>ผล 67</th><th>ผล 68</th><th>ผล ก.ย. 69</th><th>แผน 70</th>'
+        + '<th>ส่วนต่าง<br>แผน 70 − ผล 69</th><th>เทรนด์ผล 67→69</th></tr></thead><tbody>';
       var gTot = 0;
       list.forEach(function (ai) { gTot += Math.abs(acc[String(ai)][3] || acc[String(ai)][1] || 0); });
       list.forEach(function (ai) {
@@ -1583,6 +1607,7 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
         h += '<tr' + (an ? ' class="dr-row-sev' + an.sev + '"' : '') + '><td style="text-align:left"><span class="dr-acode">' + m[0] + '</span><br>' + (m[1] || '—') + drFlagHtml(an) + '</td>'
           + '<td>' + drNum(v[0]) + '</td><td>' + drNum(v[1]) + '</td><td>' + drNum(v[2]) + '</td>'
           + '<td><b>' + drNum(v[3]) + '</b></td>'
+          + '<td>' + drDelta(delta(ai), v[2], isRev) + '</td>'
           + '<td>' + drTrend([v[0], v[1], v[2]]) + '</td></tr>';
       });
       h += '</tbody></table>';
