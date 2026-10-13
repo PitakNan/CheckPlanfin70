@@ -861,13 +861,13 @@
 
     <!-- ===== แถบแท็บ ===== -->
     <nav class="tabbar" role="tablist" aria-label="หมวดเนื้อหา">
-      <button class="tabbtn" role="tab" data-tab="overview" aria-selected="true">ภาพรวมเขตฯ</button>
-      <button class="tabbtn" role="tab" data-tab="target" aria-selected="false">กลุ่มเป้าหมาย + ทีมตรวจ</button>
+      <button class="tabbtn" role="tab" data-tab="overview" aria-selected="false">ภาพรวมเขตฯ</button>
+      <button class="tabbtn on" role="tab" data-tab="target" aria-selected="true">กลุ่มเป้าหมาย + ทีมตรวจ</button>
       <button class="tabbtn" role="tab" data-tab="quality" aria-selected="false">คุณภาพแผน</button>
       <button class="tab-all" type="button" id="showAllTabs" title="กางทุกแท็บในหน้าเดียว (สำหรับค้นหา/พิมพ์)">กางทุกแท็บ</button>
     </nav>
 
-    <div class="tabpanel" id="tab-overview" role="tabpanel">
+    <div class="tabpanel" id="tab-overview" role="tabpanel" hidden>
 
     <section class="ov-sec">
       <div class="sec-head"><h2 class="sec-title">ประเด็นเสนอที่ประชุม</h2></div>
@@ -937,7 +937,7 @@
     <!-- ===== 1. TARGET GROUP 20 (กลุ่มเป้าหมายนำเสนอ) ===== -->
     </div><!-- /tab-overview -->
 
-    <div class="tabpanel" id="tab-target" role="tabpanel" hidden>
+    <div class="tabpanel" id="tab-target" role="tabpanel">
     <section id="target20">
       <div class="sec-head">
         <h2 class="sec-title">กลุ่มเป้าหมายนำเสนอ 20 แห่ง</h2>
@@ -1444,10 +1444,10 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
     var TABS = ['overview', 'target', 'quality'];
     function cur() {
       var h = (location.hash || '').slice(1);
-      return TABS.indexOf(h) >= 0 ? h : 'overview';
+      return TABS.indexOf(h) >= 0 ? h : 'target';
     }
     function show(name, push) {
-      if (TABS.indexOf(name) < 0) name = 'overview';
+      if (TABS.indexOf(name) < 0) name = 'target';
       document.body.classList.remove('all-tabs');
       var ab = document.getElementById('showAllTabs');
       if (ab) ab.textContent = 'กางทุกแท็บ';
