@@ -842,6 +842,73 @@
     .ql-table{ font-size:11px; } .ql-bar{ display:none; }
   }
 
+  /* ===== แท็บตรวจทานกับตัวเลขทางการ (prefix vf-) ===== */
+  .vf-sec{ margin:0 56px 22px; }
+  .vf-warn{ background:var(--navy-tint); border:1px solid #CFE0EE; border-left:3px solid var(--navy);
+            border-radius:7px; padding:10px 14px; font-size:12px; line-height:1.7; color:var(--navy-ink);
+            margin-bottom:14px; overflow-wrap:anywhere; }
+  .vf-stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:11px; margin-bottom:16px; }
+  .vf-stat{ border:1px solid var(--line); border-top:4px solid var(--navy); border-radius:9px;
+            padding:12px 14px; background:#fff; }
+  .vf-stat.ok{ border-top-color:#3F7D5A; } .vf-stat.warn{ border-top-color:var(--orange); }
+  .vf-stat.bad{ border-top-color:var(--red); }
+  .vf-stat > b{ display:block; font-family:"Prompt",sans-serif; font-weight:700; font-size:29px;
+                line-height:1.2; color:var(--navy); }
+  .vf-stat.ok > b{ color:#3F7D5A; } .vf-stat.warn > b{ color:var(--orange); } .vf-stat.bad > b{ color:var(--red); }
+  .vf-stat span{ display:block; font-size:11.6px; line-height:1.6; color:var(--ink-soft); margin-top:3px;
+                 overflow-wrap:anywhere; }
+  .vf-stat span b{ font-size:inherit; font-weight:700; color:var(--navy-ink); }
+
+  .vf-nan{ border:1px solid #CFE0EE; border-left:4px solid #3F7D5A; border-radius:9px;
+           background:#F4F9F6; padding:13px 16px; margin-bottom:16px; }
+  .vf-nan-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:13.5px; color:#2C5E43; margin-bottom:6px; }
+  .vf-nan p{ margin:0 0 9px; font-size:12.2px; line-height:1.75; color:var(--ink); overflow-wrap:anywhere; }
+  .vf-nan-g{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:9px; }
+  .vf-nan-c{ background:#fff; border:1px solid #D7E6DD; border-radius:7px; padding:8px 11px; }
+  .vf-nan-c i{ display:block; font-style:normal; font-size:11px; color:var(--ink-faint); }
+  .vf-nan-c u{ display:block; text-decoration:none; font-family:"Prompt",sans-serif; font-weight:700;
+               font-size:16px; color:var(--navy-ink); font-variant-numeric:tabular-nums; margin-top:2px; }
+  .vf-nan-c u.neg{ color:var(--red); } .vf-nan-c u.pos{ color:#3F7D5A; }
+
+  .vf-wrap{ border:1px solid var(--line); border-radius:9px; overflow-x:auto; background:#fff; margin-bottom:14px; }
+  .vf-table{ width:100%; min-width:720px; border-collapse:collapse; font-size:12.2px; }
+  .vf-table thead th{ background:var(--navy); color:#fff; font-family:"Prompt",sans-serif; font-weight:600;
+                      font-size:11.6px; padding:8px 10px; text-align:left; white-space:nowrap; }
+  .vf-table thead th.num{ text-align:right; }
+  .vf-table tbody td{ padding:8px 10px; border-top:1px solid var(--line); vertical-align:top; line-height:1.55; }
+  .vf-table tbody td.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .vf-table tbody tr.vf-row{ cursor:pointer; }
+  .vf-table tbody tr.vf-row:hover{ background:var(--navy-tint); }
+  .vf-table tbody tr.vf-row.open{ background:var(--navy-tint); }
+  .vf-nm{ font-weight:600; color:var(--navy-ink); }
+  .vf-nm:after{ content:"▸"; margin-left:6px; font-size:10px; color:var(--ink-faint); }
+  .vf-row.open .vf-nm:after{ content:"▾"; }
+  .vf-tag{ display:inline-block; font-size:10.5px; font-weight:600; font-family:"Prompt",sans-serif;
+           padding:2px 7px; border-radius:20px; white-space:nowrap; }
+  .vf-tag.gap{ background:var(--red-tint); color:var(--red); }
+  .vf-tag.real{ background:var(--orange-tint); color:#9C5410; }
+  .vf-tag.move{ background:var(--navy-tint); color:var(--navy); }
+  .vf-tag.minor{ background:#EEF1F4; color:var(--ink-soft); }
+  .vf-why{ font-size:11.3px; color:var(--ink-soft); line-height:1.55; overflow-wrap:anywhere; }
+  .vf-det td{ background:#FAFBFC; padding:0 !important; }
+  .vf-sub{ width:100%; border-collapse:collapse; font-size:11.6px; }
+  .vf-sub th{ background:#EDF2F7; color:var(--navy-ink); font-family:"Prompt",sans-serif; font-weight:600;
+              font-size:11px; padding:6px 10px; text-align:left; }
+  .vf-sub th.num{ text-align:right; }
+  .vf-sub td{ padding:6px 10px; border-top:1px solid #E6EDF3; }
+  .vf-sub td.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .vf-sub td.pc{ font-family:"Prompt",sans-serif; font-weight:600; color:var(--navy); white-space:nowrap; }
+  .vf-up{ color:#3F7D5A; } .vf-dn{ color:var(--red); }
+
+  .vf-note{ border:1px solid var(--line); border-radius:8px; padding:11px 14px; background:#FAFBFC; margin-bottom:13px; }
+  .vf-note-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:12.3px; color:var(--navy-ink); margin-bottom:5px; }
+  .vf-note ul{ margin:0; padding-left:18px; }
+  .vf-note li{ font-size:11.8px; line-height:1.75; color:var(--ink); margin-bottom:3px; overflow-wrap:anywhere; }
+
+  @media (max-width:760px){
+    .vf-sec{ margin:0 14px 18px; }
+    .vf-stat b{ font-size:25px; }
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap">
@@ -864,6 +931,7 @@
       <button class="tabbtn" role="tab" data-tab="overview" aria-selected="false">ภาพรวมเขตฯ</button>
       <button class="tabbtn on" role="tab" data-tab="target" aria-selected="true">กลุ่มเป้าหมาย + ทีมตรวจ</button>
       <button class="tabbtn" role="tab" data-tab="quality" aria-selected="false">คุณภาพแผน</button>
+      <button class="tabbtn" role="tab" data-tab="verify" aria-selected="false">ตรวจทานกับตัวเลขทางการ</button>
       <button class="tab-all" type="button" id="showAllTabs" title="กางทุกแท็บในหน้าเดียว (สำหรับค้นหา/พิมพ์)">กางทุกแท็บ</button>
     </nav>
 
@@ -1319,7 +1387,7 @@
         </div>
         <div class="obs-item">
           <svg class="obs-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6 21 19.4H3L12 3.6Z"/><path d="M12 10v4.4"/><circle cx="12" cy="17.2" r=".15" fill="currentColor" stroke-width="2.6"/></svg>
-          <p><b>รพ.น่าน (รพศ.)</b> ไม่อยู่ในรายชื่อ — 7Risk ฉบับ 11 ต.ค. มีข้อมูลแล้ว ประเมินได้ 3 ใน 4 เกณฑ์และ<b>ไม่เข้าเกณฑ์ใดเลย</b> (EBITDA ก.ย. 69 +488.6 ลบ., Risk Scoring 0, แผน 70 เกินดุล 271.3 ลบ.) แต่ยัง<b>ไม่มีผล ก.ย. 69 จึงประเมินข้อ 1 ไม่ได้</b> — และตัวเลข 7Risk ชุดนี้สูงผิดปกติขณะที่เงินบำรุงคงเหลือติดลบ 22.6 ลบ. <b>ควรให้ยืนยันงบทดลอง ก.ย. 69 ก่อนใช้อ้างอิง</b></p>
+          <p><b>รพ.น่าน (รพศ.)</b> ไม่อยู่ในรายชื่อ — 7Risk ฉบับ 11 ต.ค. มีข้อมูลแล้ว ประเมินได้ 3 ใน 4 เกณฑ์และ<b>ไม่เข้าเกณฑ์ใดเลย</b> (EBITDA ก.ย. 69 +488.6 ลบ., Risk Scoring 0, แผน 70 เกินดุล 271.3 ลบ.) แต่ยัง<b>ไม่มีผล ก.ย. 69 จึงประเมินข้อ 1 ไม่ได้</b> — และตัวเลข 7Risk ชุดนี้สูงผิดปกติขณะที่เงินบำรุงคงเหลือติดลบ 22.6 ลบ. <b>ยืนยันกับระบบ HFA แล้วเมื่อ 13 ต.ค. — ตัวเลขถูกต้อง</b> (ดูแท็บ <a href="#verify" data-goto="verify" style="color:var(--navy);font-weight:700">ตรวจทานกับตัวเลขทางการ</a>)</p>
         </div>
       </div>
     </section>
@@ -1348,6 +1416,83 @@
         · งบทดลอง ก.ย. 2569 · QuickMethod ก.ย. 2569 — คลิกชื่อหน่วยบริการเพื่อดูรายละเอียดและเจาะรายหมวด</p>
     </section>
     </div><!-- /tab-quality -->
+
+    <div class="tabpanel" id="tab-verify" role="tabpanel" hidden>
+
+    <section class="vf-sec">
+      <div class="sec-head">
+        <h2 class="sec-title">ตรวจทานกับตัวเลขทางการ</h2>
+        <p class="sec-sub">ผล ก.ย. 2569 ราย 27 หมวดบัญชี × 103 หน่วยบริการ</p>
+      </div>
+
+      <div class="vf-warn"><b>ไม่ใช่เกณฑ์คัดกรอง และไม่กระทบคะแนน/ลำดับของ 55 แห่ง</b> —
+        เป็นการตรวจทานว่าตัวเลข “ผล ณ ก.ย. 69” ที่ใช้ทั้งหน้านี้ ตรงกับระบบ <b>HFA</b> ของกองเศรษฐกิจสุขภาพหรือไม่
+        โดยดึงรายงาน Planfin รายหน่วยบริการจากต้นทางมาเทียบทีละหมวด ครบทั้ง 103 แห่ง</div>
+
+      <div class="vf-stats">
+        <div class="vf-stat ok"><b id="vfExact">—</b><span>แห่งที่ <b>ทุกหมวดตรงกันเป๊ะ</b><br>กับตัวเลขทางการ</span></div>
+        <div class="vf-stat warn"><b id="vfDiff">—</b><span>แห่งที่มีหมวดไม่ตรง<br>ดูรายละเอียดในตารางด้านล่าง</span></div>
+        <div class="vf-stat bad"><b>2</b><span>แห่งที่ควร<b>ขอคำยืนยัน</b><br>ศรีสังวาลย์ · ภูเพียง</span></div>
+        <div class="vf-stat"><b>1</b><span>จุดบอดที่<b>ปิดได้แล้ว</b><br>รพ.น่าน มีตัวเลขทางการครบ</span></div>
+      </div>
+
+      <div class="vf-nan">
+        <div class="vf-nan-h">ปิดจุดบอด: รพ.น่าน (10716) มีผล ก.ย. 69 ครบแล้ว</div>
+        <p>ฐานข้อมูลที่ใช้คัดกรองไม่มีผล ก.ย. 69 ของ รพ.น่าน เลย จึงประเมินเกณฑ์ข้อ 1 ไม่ได้และไม่เข้ารายชื่อ 55 แห่ง
+          — แต่<b>ระบบ HFA มีครบทุกหมวด</b> และตัวเลข EBITDA ที่ได้<b>ตรงกับ 7 Risk Scoring พอดี</b>
+          จึงยืนยันได้ว่า 488.6 ลบ. ไม่ใช่ตัวเลขผิด ตามที่เคยตั้งข้อสังเกตไว้</p>
+        <div class="vf-nan-g" id="vfNanG"></div>
+        <p style="margin:10px 0 0">ถ้านำตัวเลขทางการมาวัดกับแผนปี 69 ด้วยวิธีเดียวกับเกณฑ์ข้อ 1:
+          <b id="vfNanR">—</b> ด้านรายได้ และ <b id="vfNanE">—</b> ด้านค่าใช้จ่าย
+          → <b>ด้านรายได้หลุดกรอบ ±5%</b> ซึ่งเข้าข่ายเกณฑ์ข้อ 1 ถ้าข้อมูลมาทัน
+          <br><span style="font-size:11.3px;color:var(--ink-soft)">หมายเหตุ: นิยามรายได้ที่เกณฑ์ข้อ 1 ใช้แคบกว่านิยามนี้เล็กน้อย
+          ตัวเลขนี้จึงใช้เป็น<b>สัญญาณเตือน</b> ไม่ใช่การคิดคะแนนใหม่ — รายชื่อและลำดับ 55 แห่งคงเดิม</span></p>
+      </div>
+
+      <div class="vf-wrap">
+        <table class="vf-table">
+          <thead>
+            <tr>
+              <th>หน่วยบริการ</th>
+              <th>จังหวัด</th>
+              <th class="num">หมวดที่ต่าง</th>
+              <th class="num">Δ รายได้</th>
+              <th class="num">Δ ค่าใช้จ่าย</th>
+              <th>ลักษณะ</th>
+            </tr>
+          </thead>
+          <tbody id="vfBody"></tbody>
+        </table>
+      </div>
+
+      <div class="vf-note">
+        <div class="vf-note-h">อ่านตารางนี้อย่างไร</div>
+        <ul>
+          <li><b>Δ = ตัวเลขทางการ − ตัวเลขที่หน้านี้ใช้</b> ค่าบวกคือทางการสูงกว่า</li>
+          <li><span class="vf-tag gap">ข้อมูลหาย</span> ฝั่งเราไม่มีข้อมูล แต่ทางการมี — เติมได้ทันที</li>
+          <li><span class="vf-tag move">งวดยังเดิน</span> งบ ก.ย. 69 ยังไม่ปิด ตัวเลขขยับได้ทุกวัน ไม่ใช่ความผิดพลาด</li>
+          <li><span class="vf-tag real">ต่างจริง</span> ต่างในระดับที่ควรให้หน่วยบริการยืนยันก่อนใช้อ้างอิง</li>
+          <li><span class="vf-tag minor">ต่างเล็กน้อย</span> หลักหมื่นถึงแสน ไม่กระทบการตัดสินเกณฑ์ใด</li>
+        </ul>
+      </div>
+
+      <div class="vf-note">
+        <div class="vf-note-h">ข้อควรรู้ก่อนเทียบตัวเลขสองแหล่ง</div>
+        <ul>
+          <li><b>หมวด P10 สองระบบตั้งชื่อไม่ตรงกัน</b> — HFA แยก “ค่ารักษาชำระเงิน / สถานะและสิทธิ / พ.ร.บ.รถ / UC โควิด” ออกมาเป็นหมวดย่อย
+            ขณะที่ฐานของเรารวมไว้ในหมวดเดียว เมื่อกระทบยอดกลับแล้ว <b>ตรงกัน 100 จาก 102 แห่ง</b> จึงไม่ใช่ความต่างจริง</li>
+          <li><b>งวด ก.ย. 69 ยังเดินอยู่</b> — ตัวเลขทางการชุดนี้ดึงวันที่ <b id="vfAsof">—</b>
+            ถ้าดึงใหม่คนละวันยอดอาจไม่เท่าเดิม การเทียบจึงต้องดึงทุกแหล่งในวันเดียวกัน</li>
+          <li>เทียบเฉพาะ <b>27 หมวดที่มีร่วมกันทั้งสองระบบ</b> (ไม่รวมแถวผลรวม)</li>
+        </ul>
+      </div>
+
+      <p class="src">ที่มา: ระบบ HFA กองเศรษฐกิจสุขภาพและหลักประกันสุขภาพ — รายงาน Planfin (ข้อมูลดำเนินงาน) รายหน่วยบริการ
+        งวดกันยายน 2569 ดึงครบ 103/103 แห่ง เมื่อ <b>13 ต.ค. 2569</b> · เทียบกับฐานที่หน้านี้ใช้
+        (สรุปกลุ่มเป้าหมาย Rev03.xlsx ชีท “สรุปแผนVsผล(ตามP)”)</p>
+    </section>
+    </div><!-- /tab-verify -->
+
 
 
     <!-- ===== FOOTER ===== -->
@@ -1441,7 +1586,7 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
 
   /* ===== แท็บ ===== */
   (function () {
-    var TABS = ['overview', 'target', 'quality'];
+    var TABS = ['overview', 'target', 'quality', 'verify'];
     function cur() {
       var h = (location.hash || '').slice(1);
       return TABS.indexOf(h) >= 0 ? h : 'target';
@@ -2386,5 +2531,100 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       setTimeout(function(){ setExportState(exportLabel, false); }, 2600);
     }
   });
+})();
+</script>
+
+<script>
+/* ===== แท็บตรวจทานกับตัวเลขทางการ (HFA) ===== */
+var VFX = {"asof":"13 ต.ค. 2569","nTotal":103,"nExact":96,"rows":[{"code":"10716","name":"น่าน รพท","prov":"น่าน","n":25,"amt":4390609994.77,"dR":2369930465.26,"dE":2020679529.51,"dNI":349250935.75,"kind":"gap","why":"ฐานเดิมไม่มีข้อมูลเลย — ตัวเลขทางการมีครบทุกหมวด","cells":[{"p":"P04","l":"รายได้ UC","r":0.0,"h":506076530.07,"d":506076530.07},{"p":"P05","l":"รายได้จาก  EMS","r":0.0,"h":1984200.0,"d":1984200.0},{"p":"P06","l":"รายได้ค่ารักษาเบิกต้นสังกัด","r":0.0,"h":5925163.53,"d":5925163.53},{"p":"P07","l":"รายได้ค่ารักษาเบิกจ่ายตรงกรมบัญชีกลาง","r":0.0,"h":427481421.38,"d":427481421.38},{"p":"P08","l":"รายได้ประกันสังคม","r":0.0,"h":68275587.29,"d":68275587.29},{"p":"P09","l":"รายได้แรงงานต่างด้าว","r":0.0,"h":462659.48,"d":462659.48},{"p":"P10","l":"รายได้ค่ารักษาและบริการอื่น ๆ","r":0.0,"h":153856776.03,"d":153856776.03},{"p":"P11","l":"รายได้งบประมาณส่วนบุคลากร","r":0.0,"h":470242963.46,"d":470242963.46},{"p":"P12","l":"รายได้อื่น","r":0.0,"h":541818797.75,"d":541818797.75},{"p":"P13","l":"รายได้งบลงทุน","r":0.0,"h":122439294.44,"d":122439294.44},{"p":"P14","l":"ต้นทุนยา","r":0.0,"h":354016034.32,"d":354016034.32},{"p":"P15","l":"ต้นทุนเวชภัณฑ์มิใช่ยาและวัสดุการแพทย์","r":0.0,"h":201226163.55,"d":201226163.55},{"p":"P151","l":"ต้นทุนวัสดุทันตกรรม","r":0.0,"h":4619967.07,"d":4619967.07},{"p":"P16","l":"ต้นทุนวัสดุวิทยาศาสตร์การแพทย์","r":0.0,"h":15764920.71,"d":15764920.71},{"p":"P17","l":"เงินเดือนและค่าจ้างประจำ","r":0.0,"h":470242963.46,"d":470242963.46},{"p":"P18","l":"ค่าจ้างชั่วคราว","r":0.0,"h":149829885.25,"d":149829885.25},{"p":"P19","l":"ค่าตอบแทน","r":0.0,"h":261770749.73,"d":261770749.73},{"p":"P20","l":"ค่าใช้จ่ายบุคลากรอื่น","r":0.0,"h":41559699.44,"d":41559699.44},{"p":"P21","l":"ค่าใช้สอย","r":0.0,"h":155530276.64,"d":155530276.64},{"p":"P22","l":"ค่าสาธารณูปโภค","r":0.0,"h":37372448.66,"d":37372448.66},{"p":"P23","l":"วัสดุใช้ไป","r":0.0,"h":45769991.38,"d":45769991.38},{"p":"P24","l":"ค่าเสื่อมราคาและค่าตัดจำหน่าย","r":0.0,"h":261772640.81,"d":261772640.81},{"p":"P241","l":"หนี้สูญและสงสัยจะสูญ","r":0.0,"h":300353.82,"d":300353.82},{"p":"P25","l":"ค่าใช้จ่ายอื่น","r":0.0,"h":20903434.67,"d":20903434.67},{"p":"P61","l":"รายได้ค่ารักษา อปท.","r":0.0,"h":71367071.83,"d":71367071.83}]},{"code":"10719","name":"ศรีสังวาลย์ รพท","prov":"แม่ฮ่องสอน","n":5,"amt":11723034.27,"dR":-9329827.03,"dE":-2393207.24,"dNI":-6936619.79,"kind":"real","why":"ต่างจริงระดับสิบล้าน ต้องให้หน่วยบริการยืนยัน","cells":[{"p":"P06","l":"รายได้ค่ารักษาเบิกต้นสังกัด","r":20206605.49,"h":12266023.46,"d":-7940582.03},{"p":"P12","l":"รายได้อื่น","r":56636787.75,"h":55247542.75,"d":-1389245.0},{"p":"P15","l":"ต้นทุนเวชภัณฑ์มิใช่ยาและวัสดุการแพทย์","r":29432805.64,"h":27415890.4,"d":-2016915.24},{"p":"P21","l":"ค่าใช้สอย","r":30033888.14,"h":30016688.14,"d":-17200.0},{"p":"P23","l":"วัสดุใช้ไป","r":11120009.36,"h":10760917.36,"d":-359092.0}]},{"code":"11177","name":"เวียงสา รพช","prov":"น่าน","n":2,"amt":1003922.52,"dR":0.0,"dE":1001277.48,"dNI":-1001277.48,"kind":"move","why":"งวด ก.ย. 69 ยังเดินอยู่ — ค่าใช้จ่ายเพิ่มระหว่าง 12→13 ต.ค.","cells":[{"p":"P21","l":"ค่าใช้สอย","r":46503379.46,"h":47505979.46,"d":1002600.0},{"p":"P22","l":"ค่าสาธารณูปโภค","r":5557465.21,"h":5556142.69,"d":-1322.52}]},{"code":"25017","name":"ภูเพียง รพช","prov":"น่าน","n":1,"amt":333795.0,"dR":0.0,"dE":-333795.0,"dNI":333795.0,"kind":"real","why":"ต่างจริง หมวดเดียว","cells":[{"p":"P19","l":"ค่าตอบแทน","r":10485360.0,"h":10151565.0,"d":-333795.0}]},{"code":"11200","name":"แม่ฟ้าหลวง รพช","prov":"เชียงราย","n":3,"amt":126377.5,"dR":63020.0,"dE":62682.5,"dNI":337.5,"kind":"minor","why":"ต่างเล็กน้อย ย้ายยอดระหว่างหมวด","cells":[{"p":"P12","l":"รายได้อื่น","r":8223737.63,"h":8286757.63,"d":63020.0},{"p":"P241","l":"หนี้สูญและสงสัยจะสูญ","r":55631.21,"h":55293.71,"d":-337.5},{"p":"P25","l":"ค่าใช้จ่ายอื่น","r":49529327.94,"h":49592347.94,"d":63020.0}]},{"code":"11146","name":"แม่เมาะ รพช","prov":"ลำปาง","n":2,"amt":21030.0,"dR":30.0,"dE":21000.0,"dNI":-20970.0,"kind":"minor","why":"ต่างเล็กน้อย","cells":[{"p":"P10","l":"รายได้ค่ารักษาและบริการอื่น ๆ","r":6424311.84,"h":6424341.84,"d":30.0},{"p":"P20","l":"ค่าใช้จ่ายบุคลากรอื่น","r":4078176.27,"h":4099176.27,"d":21000.0}]},{"code":"11140","name":"แม่ทา รพช","prov":"ลำพูน","n":1,"amt":16643.41,"dR":-16643.41,"dE":0.0,"dNI":-16643.41,"kind":"minor","why":"ต่างเล็กน้อย (เศษจากการกระทบยอด P10)","cells":[{"p":"P10","l":"รายได้ค่ารักษาและบริการอื่น ๆ","r":5011407.24,"h":4994763.83,"d":-16643.41}]}],"nan":{"R":2369930465.26,"E":2020679529.51,"NI":349250935.75,"EB":488584282.12,"planR":1741582045.75,"planE":1825471651.33,"actR":2247491170.82,"actE":1758906888.7}};
+(function () {
+  if (typeof VFX === 'undefined') return;
+  var body = document.getElementById('vfBody');
+  if (!body) return;
+
+  function fmt(v, dec) {
+    if (v === null || v === undefined) return '—';
+    return Number(v).toLocaleString('en-US', {
+      minimumFractionDigits: dec === undefined ? 0 : dec,
+      maximumFractionDigits: dec === undefined ? 0 : dec
+    });
+  }
+  function sgn(v) { return (v > 0 ? '+' : '') + fmt(v); }
+  function cls(v) { return v > 0 ? 'vf-up' : (v < 0 ? 'vf-dn' : ''); }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  var TAGTXT = { gap: 'ข้อมูลหาย', move: 'งวดยังเดิน', real: 'ต่างจริง', minor: 'ต่างเล็กน้อย' };
+
+  var ex = document.getElementById('vfExact');
+  if (ex) ex.textContent = VFX.nExact + ' / ' + VFX.nTotal;
+  var df = document.getElementById('vfDiff');
+  if (df) df.textContent = VFX.rows.length;
+  var ao = document.getElementById('vfAsof');
+  if (ao) ao.textContent = VFX.asof;
+
+  /* การ์ดตัวเลข รพ.น่าน */
+  var ng = document.getElementById('vfNanG');
+  if (ng) {
+    var n = VFX.nan;
+    [['รายได้รวม', n.R], ['ค่าใช้จ่ายรวม', n.E],
+     ['รายได้สูง(ต่ำ)กว่าค่าใช้จ่าย', n.NI], ['EBITDA', n.EB]].forEach(function (p) {
+      var d = document.createElement('div');
+      d.className = 'vf-nan-c';
+      d.innerHTML = '<i>' + esc(p[0]) + '</i><u class="' + (p[1] < 0 ? 'neg' : 'pos') + '">' +
+                    fmt(p[1] / 1e6, 1) + ' <span style="font-size:11px;font-weight:400">ลบ.</span></u>';
+      ng.appendChild(d);
+    });
+    var pr = (n.actR - n.planR) / n.planR * 100, pe = (n.actE - n.planE) / n.planE * 100;
+    var er = document.getElementById('vfNanR'), ee = document.getElementById('vfNanE');
+    if (er) { er.textContent = (pr > 0 ? '+' : '') + pr.toFixed(1) + '%'; er.className = cls(pr); }
+    if (ee) { ee.textContent = (pe > 0 ? '+' : '') + pe.toFixed(1) + '%'; ee.className = cls(pe); }
+  }
+
+  /* ตาราง 7 แห่ง — ใช้ data-vf ไม่ใช่ data-code เพื่อไม่ชนกับ modal ของตารางอื่น */
+  VFX.rows.forEach(function (r, i) {
+    var tr = document.createElement('tr');
+    tr.className = 'vf-row';
+    tr.setAttribute('data-vf', String(i));
+    tr.innerHTML =
+      '<td><span class="vf-nm">' + esc(r.name) + '</span><br>' +
+        '<span style="font-size:11px;color:var(--ink-faint)">' + esc(r.code) + '</span></td>' +
+      '<td>' + esc(r.prov) + '</td>' +
+      '<td class="num">' + r.n + '</td>' +
+      '<td class="num ' + cls(r.dR) + '">' + sgn(r.dR) + '</td>' +
+      '<td class="num ' + cls(r.dE) + '">' + sgn(r.dE) + '</td>' +
+      '<td><span class="vf-tag ' + r.kind + '">' + TAGTXT[r.kind] + '</span>' +
+        '<div class="vf-why">' + esc(r.why) + '</div></td>';
+    body.appendChild(tr);
+
+    var sub = '<table class="vf-sub"><thead><tr><th>หมวด</th><th>ชื่อหมวดบัญชี</th>' +
+      '<th class="num">ที่หน้านี้ใช้</th><th class="num">ตัวเลขทางการ</th><th class="num">ต่าง</th></tr></thead><tbody>' +
+      r.cells.map(function (c) {
+        return '<tr><td class="pc">' + esc(c.p) + '</td><td>' + esc(c.l) + '</td>' +
+          '<td class="num">' + fmt(c.r, 2) + '</td><td class="num">' + fmt(c.h, 2) + '</td>' +
+          '<td class="num ' + cls(c.d) + '">' + sgn(c.d) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+    var dt = document.createElement('tr');
+    dt.className = 'vf-det';
+    dt.hidden = true;
+    dt.innerHTML = '<td colspan="6">' + sub + '</td>';
+    body.appendChild(dt);
+  });
+
+  /* กางได้ทีละแถว (accordion) เหมือนส่วนอื่นของหน้า */
+  body.addEventListener('click', function (e) {
+    var tr = e.target.closest ? e.target.closest('tr.vf-row') : null;
+    if (!tr) return;
+    e.stopPropagation();
+    var want = !tr.classList.contains('open');
+    body.querySelectorAll('tr.vf-row').forEach(function (x) { x.classList.remove('open'); });
+    body.querySelectorAll('tr.vf-det').forEach(function (x) { x.hidden = true; });
+    if (want) {
+      tr.classList.add('open');
+      if (tr.nextElementSibling) tr.nextElementSibling.hidden = false;
+    }
+  }, true);
 })();
 </script>
