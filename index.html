@@ -1285,14 +1285,26 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
         if (!rows.length) return;
         html += '<div class="dr-sec">' + (kind === 1 ? 'รายได้' : 'ค่าใช้จ่าย') + '</div>';
         html += '<div class="modal-table-wrap"><table class="dr-table"><thead><tr>'
-          + '<th>หมวด</th><th>ปี 2567</th><th>ปี 2568</th><th>ปี 2569</th><th>แผน 2570</th></tr></thead><tbody>';
+          + '<th>หมวด</th><th>ปี 2567</th><th>ปี 2568</th><th>ปี 2569</th><th>แผน 2570</th><th>เทรนด์ผล 67→69</th></tr></thead><tbody>';
         rows.sort(function (a, b) {
           var ta = PLIST[a][0].indexOf('29') === 1, tb = PLIST[b][0].indexOf('29') === 1;
           return (ta ? 1 : 0) - (tb ? 1 : 0);
         });
+        /* แถวรวม: คำนวณเองจากหมวดย่อยให้สอดคล้องกันทุกปี
+           (ต้นทางมีแถวรวมรายได้ปี 69 ที่ใช้นิยามแคบกว่าปี 67/68 เทียบข้ามปีไม่ได้) */
+        var EXC = (kind === 1) ? { P291: 1, P121: 1, P13: 1 } : { P292: 1, P24: 1, P251: 1 };
+        var calcTot = [0, 0, 0, 0, 0, 0, 0], hasTot = [0, 0, 0, 0, 0, 0, 0];
+        rows.forEach(function (i) {
+          if (EXC[PLIST[i][0]]) return;
+          var v = dp[String(i)];
+          for (var k = 0; k < 7; k++) if (v[k] !== null && v[k] !== undefined) { calcTot[k] += v[k]; hasTot[k] = 1; }
+        });
+        for (var k = 0; k < 7; k++) if (!hasTot[k]) calcTot[k] = null;
+
         rows.forEach(function (i) {
           var v = dp[String(i)], p = PLIST[i];
           var isTotal = (p[0] === 'P291' || p[0] === 'P292');
+          if (isTotal) { v = calcTot; }
           var nSub = (BYP[i] || []).filter(function (ai) { return (DA[code] || {})[String(ai)]; }).length;
           html += '<tr class="' + (isTotal ? 'dr-total' : 'dr-p') + '"' + (isTotal ? '' : ' data-drp="' + i + '" data-drcode="' + code + '"') + '>'
             + '<td>' + (isTotal ? '' : '<span class="dr-chev">▸</span>')
@@ -1301,9 +1313,18 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
             + '<td>' + drYearCell(v[0], v[1]) + '</td>'
             + '<td>' + drYearCell(v[2], v[3]) + '</td>'
             + '<td>' + drYearCell(v[4], v[5]) + '</td>'
-            + '<td><b>' + drNum(v[6]) + '</b></td></tr>';
+            + '<td><b>' + drNum(v[6]) + '</b></td>'
+            + '<td>' + drTrend([v[1], v[3], v[5]]) + '</td></tr>';
         });
         html += '</tbody></table></div>';
+        if (kind === 1) {
+          var off = dp[String(PLIST.map(function (x) { return x[0]; }).indexOf('P291'))];
+          if (off && off[5] !== null && off[5] !== undefined) {
+            html += '<div class="dr-note">แถว <b>รวมรายได้</b> คำนวณจากผลรวมหมวดย่อย เพื่อให้เทียบข้ามปีได้ · '
+              + 'ตัวเลขที่ใช้ <b>ตัดสินเกณฑ์ข้อ 1</b> คือ รายได้ ผล ก.ย. 69 = <b>' + fmtBaht(off[5]) + '</b> '
+              + '(แผน 69 = ' + drNum(off[4]) + ') ซึ่งต้นทางใช้นิยามแคบกว่าผลรวมหมวด จึงไม่นำมาทำเทรนด์</div>';
+          }
+        }
       });
       return html;
     }
@@ -1335,7 +1356,7 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
         var tr = document.createElement('tr');
         tr.className = 'dr-detail';
         var td = document.createElement('td');
-        td.colSpan = 5;
+        td.colSpan = 6;
         td.innerHTML = drSubTable(row.getAttribute('data-drcode'), parseInt(row.getAttribute('data-drp'), 10));
         tr.appendChild(td);
         row.parentNode.insertBefore(tr, row.nextSibling);
