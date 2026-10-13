@@ -1689,9 +1689,9 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       + '<span class="fd-badge">ระดับ ' + lv + '</span></div>';
     h += '<div class="fd-row"><span>ต้นทุนรวมสะสม (TC)</span><b>' + fmtBaht(tc) + '</b></div>';
 
-    function line(label, val, med, n, unit) {
+    function line(label, val, med, n, unit, need) {
       if (!val) {
-        return '<div class="fd-row"><span>' + label + '</span><b class="qm-miss">ยังขาดข้อมูลปริมาณงาน</b></div>';
+        return '<div class="fd-row"><span>' + label + '</span><b class="qm-miss">ขาด ' + need + '</b></div>';
       }
       var t = '<div class="fd-row"><span>' + label + '</span><b>' + fmtBaht(val) + ' ' + unit + '</b></div>';
       if (med) {
@@ -1702,10 +1702,11 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
       }
       return t;
     }
-    h += line('ต้นทุน OPD ต่อครั้ง', opdU, QMPEER.opd[lv], QMPEER.nOpd[lv], 'บ./ครั้ง');
-    h += line('ต้นทุน IPD ต่อ AdjRW', ipdU, QMPEER.ipd[lv], QMPEER.nIpd[lv], 'บ./AdjRW');
-    if (visits) h += '<div class="fd-row qm-sub"><span>ปริมาณงาน</span><b>OPD ' + fmtBaht(visits) + ' ครั้ง'
-      + (adjrw ? ' · AdjRW ' + fmtBaht(adjrw) : '') + '</b></div>';
+    h += line('ต้นทุน OPD ต่อครั้ง', opdU, QMPEER.opd[lv], QMPEER.nOpd[lv], 'บ./ครั้ง', 'จำนวนครั้ง OPD');
+    h += line('ต้นทุน IPD ต่อ AdjRW', ipdU, QMPEER.ipd[lv], QMPEER.nIpd[lv], 'บ./AdjRW', 'ผลรวม AdjRW');
+    h += '<div class="fd-row qm-sub"><span>ปริมาณงานที่ส่งเข้าระบบ</span><b>'
+      + (visits ? 'OPD ' + fmtBaht(visits) + ' ครั้ง' : '<span class="qm-miss">ไม่มี OPD visit</span>')
+      + ' · ' + (adjrw ? 'AdjRW ' + fmtBaht(adjrw) : '<span class="qm-miss">ไม่มี AdjRW</span>') + '</b></div>';
 
     /* ---- บทวิเคราะห์: ขาดทุนเพราะแพง หรือเพราะงาน/รายได้น้อย ---- */
     var msg = '', cls = 'qm-note';
@@ -1714,9 +1715,17 @@ const FACILITY_DATA = {"11132":{"prov":"เชียงใหม่","name":"โ
     var hi = (pO !== null && pO > 0.1) || (pI !== null && pI > 0.1);
     var lo = (pO !== null && pO < -0.1) || (pI !== null && pI < -0.1);
     var neg = f.ebitdaAct < 0;
+    var lack = [];
+    if (!visits) lack.push('<b>จำนวนครั้ง OPD</b>');
+    if (!adjrw) lack.push('<b>ผลรวม AdjRW</b>');
     if (pO === null && pI === null) {
-      msg = 'ยังประเมินประสิทธิภาพไม่ได้ — หน่วยบริการยังไม่ส่งปริมาณงาน (OPD visit / AdjRW) เข้าระบบ '
-        + 'ควรให้กรอกให้ครบก่อน จึงจะบอกได้ว่าต้นทุนต่อหน่วยสูงหรือต่ำ';
+      msg = 'ยังประเมินประสิทธิภาพไม่ได้ — ขาด ' + lack.join(' และ ')
+        + ' ในระบบ QuickMethod ก.ย. 69 · ต้นทุนรวม (TC) มีครบ แต่ไม่มีตัวหารจึงคิดต้นทุนต่อหน่วยไม่ได้ '
+        + '<br>ต้องให้หน่วยบริการส่งข้อมูลปริมาณงานเข้าระบบก่อน';
+      cls += ' qm-warn';
+    } else if (lack.length) {
+      msg = '<b>ประเมินได้บางส่วน</b> — ขาด ' + lack.join(' และ ') + ' จึงคิดต้นทุนได้เฉพาะฝั่งที่มีข้อมูล · '
+        + (pO !== null ? 'ใช้ได้เฉพาะฝั่งผู้ป่วยนอก (OPD)' : 'ใช้ได้เฉพาะฝั่งผู้ป่วยใน (IPD)');
       cls += ' qm-warn';
     } else if (hi && lo) {
       var hiSide = (pO !== null && pO > 0.1) ? 'ผู้ป่วยนอก (OPD)' : 'ผู้ป่วยใน (IPD)';
