@@ -935,6 +935,32 @@
   .ex-lt tr.hit td{ background:var(--navy-tint); }
   .ex-n{ color:#3F7D5A; font-weight:600; } .ex-r{ color:var(--red); font-weight:600; }
 
+  /* ---- กดแถว “แบบ 1–8” ในตารางนิยาม เพื่อดูรายชื่อ รพ. ในแบบนั้น ---- */
+  .ex-lt tbody tr.ex-lrow{ cursor:pointer; }
+  .ex-lt tbody tr.ex-lrow:hover td{ background:var(--navy-tint); }
+  .ex-lt tbody tr.ex-lrow.open td{ background:var(--navy-tint); }
+  .ex-lcnt{ white-space:nowrap; }
+  .ex-lcnt b{ font-size:13px; color:var(--navy-ink); }
+  .ex-lcnt i{ display:block; font-style:normal; font-size:9.8px; color:var(--ink-faint); margin-top:1px; }
+  .ex-lcnt:after{ content:"▸"; font-size:9.5px; color:var(--ink-faint); margin-left:4px; }
+  .ex-lrow.open .ex-lcnt:after{ content:"▾"; }
+  .ex-ldet > td{ padding:0 !important; background:#fff; }
+  .ex-ld-wrap{ padding:9px 10px 11px; }
+  .ex-ld-h{ font-family:"Prompt",sans-serif; font-weight:700; font-size:11.6px; color:var(--navy-ink); margin-bottom:5px; }
+  .ex-ld-h span{ font-weight:400; color:var(--ink-faint); }
+  .ex-ld-scroll{ overflow-x:auto; }
+  .ex-ldt{ width:100%; min-width:620px; border-collapse:collapse; font-size:11px; }
+  .ex-ldt th{ background:#EDF2F7; color:var(--navy-ink); font-family:"Prompt",sans-serif; font-weight:600;
+              font-size:10.4px; padding:5px 7px; text-align:left; white-space:nowrap; }
+  .ex-ldt th.num{ text-align:right; }
+  .ex-ldt td{ padding:5px 7px; border-top:1px solid #E6EDF3; vertical-align:top; }
+  .ex-ldt td.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .ex-ldt tbody tr{ cursor:pointer; }
+  .ex-ldt tbody tr:hover td{ background:var(--navy-tint); }
+  .ex-ldt .ex-nm:after{ content:"▸"; }
+  .ex-ldt .ex-out{ opacity:.62; }
+  .ex-ld-foot{ font-size:10.6px; color:var(--ink-faint); margin-top:5px; overflow-wrap:anywhere; }
+
   .ex-scope{ font-size:11.5px; color:var(--ink-soft); margin:-6px 0 12px; }
   .ex-scope b{ color:var(--navy-ink); }
   .ex-filters{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:7px; align-items:center; }
@@ -1621,7 +1647,8 @@
       <p class="ex-scope" id="exScope"></p>
 
       <div class="ex-legend">
-        <div class="ex-legend-h">แผน 8 แบบ คืออะไร — ตัดสินจากสัญญาณ 3 ตัว (ตามนิยามในแบบฟอร์มของกระทรวง)</div>
+        <div class="ex-legend-h">แผน 8 แบบ คืออะไร — ตัดสินจากสัญญาณ 3 ตัว (ตามนิยามในแบบฟอร์มของกระทรวง)
+          <span style="font-weight:400;color:var(--ink-faint)">· คลิกที่แถวของแต่ละแบบ เพื่อดูรายชื่อ รพ. ที่ทำแผนแบบนั้นทั้งเขต</span></div>
         <table class="ex-lt">
           <thead><tr>
             <th>แบบ</th><th>EBITDA</th><th>ลงทุน &gt; 20% EBITDA</th>
@@ -2895,10 +2922,60 @@ var EXS = [{"c":"11205","n":"แม่สะเรียง","pv":"แม่ฮ�
     ['8', 'Risk',   'Risk',   'Risk',   'ปรับ EBITDA ให้เป็นบวก และชะลอการลงทุน']
   ];
   var lg = document.getElementById('exLegend');
+  var openType = null;          /* แบบที่กางรายชื่ออยู่ (คงไว้เมื่อวาดใหม่) */
+
+  /* รายชื่อ รพ. ของแบบนั้น — ทั้งเขต 103 แห่ง เรียงตามจังหวัด แล้วตามชื่อ */
+  function legendList(code) {
+    return EXS.filter(function (x) { return String(x.t) === code; })
+      .slice()
+      .sort(function (a, b) {
+        return (a.pv || '').localeCompare(b.pv || '', 'th') ||
+               (a.n  || '').localeCompare(b.n  || '', 'th');
+      });
+  }
+  function legendDetail(code, inScope) {
+    var rows = legendList(code);
+    if (!rows.length) {
+      return '<div class="ex-ld-wrap"><div class="ex-none">ไม่มีหน่วยบริการที่ทำแผนแบบ ' + code + ' ในเขตฯ</div></div>';
+    }
+    var body = rows.map(function (x) {
+      var out = inScope[x.c] ? '' : ' ex-out';
+      return '<tr class="ex-ldgo' + out + '" data-exgo="' + esc(x.c) + '" data-exgt="' + esc(code) + '">' +
+        '<td>' + (x.g === 20 ? '<span class="ex-star" title="กลุ่มนำเสนอ 20 แห่ง">★</span> ' : '') +
+          '<span class="ex-nm">' + esc(x.n) + '</span>' +
+          '<div class="ex-sub">' + esc(x.c) + ' · ' + esc(x.pv) + ' · ' + esc(x.lv) +
+          (x.rk != null ? ' · Risk ' + x.rk : '') + '</div></td>' +
+        '<td class="num">' + m(x.eb70) + (x.ebs === 'ws' ? ' <i class="ex-src">ws</i>' : '') + '</td>' +
+        '<td>' + (x.df == null ? '<span class="ex-pill nod">ไม่มีข้อมูล</span>'
+                  : '<span class="ex-pill ' + (x.df ? 'def">แผนขาดดุล' : 'sur">แผนเกินดุล') + '</span>') + '</td>' +
+        '<td>' + (x.oi == null ? '—'
+                  : '<span class="ex-pill ' + (x.oi ? 'inv">ลงทุนเกิน 20%' : 'noinv">ลงทุนไม่เกิน') + '</span>') + '</td>' +
+        '<td>' + (x.tN === 'Risk' ? '<span class="ex-r">ต่ำกว่า 1 เท่า</span>' : '<span class="ex-n">ปกติ</span>') +
+          (x.nb ? ' <em style="font-style:normal;color:var(--orange)">(ไม่กรอก)</em>' : '') + '</td>' +
+        '<td>' + (x.hp ? (x.df === 1 ? '<span class="ex-drv ' + drvClass(x.dv) + '">' + esc(x.dv) + '</span>'
+                                     : '<span class="ex-drv none">แผนเกินดุล</span>')
+                       : '<span class="ex-drv none">ไม่มีแผนปี 70</span>') + '</td></tr>';
+    }).join('');
+    var nOut = rows.filter(function (x) { return !inScope[x.c]; }).length;
+    return '<div class="ex-ld-wrap">' +
+      '<div class="ex-ld-h">รพ. ที่ทำแผน <b>แบบ ' + code + '</b> — ทั้งเขต ' + rows.length + ' แห่ง ' +
+        '<span>· คลิกชื่อ รพ. เพื่อไปที่แถวสรุปของแห่งนั้นในตารางด้านล่าง</span></div>' +
+      '<div class="ex-ld-scroll"><table class="ex-ldt"><thead><tr>' +
+        '<th>หน่วยบริการ</th><th class="num">EBITDA แผน 70</th><th>แผน</th>' +
+        '<th>การลงทุน</th><th>ทุนสำรองสุทธิ (NWC)</th><th>ขาดดุลเพราะอะไร</th>' +
+      '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+      (nOut ? '<div class="ex-ld-foot">แถวที่จางลง ' + nOut + ' แห่ง = อยู่นอกกลุ่มที่กำลังกรองอยู่ ' +
+              '(กดแล้วหน้าจะสลับไปกรองเป็น “PlanFin แบบ ' + code + '” ให้เอง)</div>' : '') +
+      '</div>';
+  }
+
   function drawLegend(list) {
     if (!lg) return;
+    var inScope = {};
+    list.forEach(function (x) { inScope[x.c] = 1; });
     lg.innerHTML = TYPES.map(function (t) {
       var n = list.filter(function (x) { return String(x.t) === t[0]; }).length;
+      var nAll = EXS.filter(function (x) { return String(x.t) === t[0]; }).length;
       /* ถ้อยคำต่างกันตามคอลัมน์ — ใช้คำเดียวทั้ง 3 คอลัมน์จะอ่านผิดความหมาย */
       var WORD = {
         1: ['เป็นบวก', 'ติดลบ'],
@@ -2909,11 +2986,37 @@ var EXS = [{"c":"11205","n":"แม่สะเรียง","pv":"แม่ฮ�
         var risk = v === 'Risk';
         return '<td class="' + (risk ? 'ex-r' : 'ex-n') + '">' + WORD[col][risk ? 1 : 0] + '</td>';
       }
-      return '<tr' + (n ? ' class="hit"' : '') + '><td><span class="ex-type g' +
+      var isOpen = openType === t[0];
+      return '<tr class="ex-lrow' + (n ? ' hit' : '') + (isOpen ? ' open' : '') + '" data-lt="' + t[0] + '">' +
+        '<td><span class="ex-type g' +
         (t[0] <= 2 ? t[0] : t[0] <= 4 ? '3' : t[0] <= 6 ? '5' : '6') + '">' + t[0] + '</span></td>' +
         cell(t[1], 1) + cell(t[2], 2) + cell(t[3], 3) +
-        '<td>' + esc(t[4]) + '</td><td class="ctr"><b>' + (n || '–') + '</b></td></tr>';
+        '<td>' + esc(t[4]) + '</td><td class="ctr ex-lcnt"><b>' + (n || '–') + '</b>' +
+        (nAll !== n ? '<i>ทั้งเขต ' + nAll + '</i>' : '') + '</td></tr>' +
+        '<tr class="ex-ldet"' + (isOpen ? '' : ' hidden') + '><td colspan="6">' +
+        legendDetail(t[0], inScope) + '</td></tr>';
     }).join('');
+  }
+
+  /* กางรายชื่อ รพ. ของแบบนั้น (ทีละแบบ) */
+  if (lg) {
+    lg.addEventListener('click', function (e) {
+      var go = e.target.closest ? e.target.closest('tr.ex-ldgo') : null;
+      if (go) {                                   /* คลิกชื่อ รพ. → ไปที่แถวสรุป */
+        e.stopPropagation();
+        jumpTo(go.getAttribute('data-exgo'), go.getAttribute('data-exgt'));
+        return;
+      }
+      var tr = e.target.closest ? e.target.closest('tr.ex-lrow') : null;
+      if (!tr) return;
+      var code = tr.getAttribute('data-lt');
+      openType = (openType === code) ? null : code;
+      lg.querySelectorAll('tr.ex-lrow').forEach(function (x) {
+        var on = x.getAttribute('data-lt') === openType;
+        x.classList.toggle('open', on);
+        if (x.nextElementSibling) x.nextElementSibling.hidden = !on;
+      });
+    });
   }
 
   /* ---------- แถวตาราง ---------- */
@@ -3064,6 +3167,27 @@ var EXS = [{"c":"11205","n":"แม่สะเรียง","pv":"แม่ฮ�
     if (cnt) cnt.textContent = 'แสดง ' + shown + ' จาก ' + EXS.length + ' แห่ง';
     setStats(list, LABEL[mode] || ('PlanFin แบบ ' + mode.slice(1)));
     drawLegend(list);
+  }
+  function setFilter(mode) {
+    document.querySelectorAll('[data-exf]').forEach(function (x) {
+      x.classList.toggle('on', x.getAttribute('data-exf') === mode);
+    });
+    applyFilter(mode);
+  }
+  /* จากรายชื่อในตารางนิยาม → ไปเปิดแถวสรุปของ รพ. แห่งนั้น */
+  function jumpTo(code, type) {
+    var idx = -1;
+    for (var i = 0; i < EXS.length; i++) { if (EXS[i].c === code) { idx = i; break; } }
+    if (idx < 0) return;
+    var tr = body.querySelector('tr.ex-row[data-ex="' + idx + '"]');
+    if (!tr) return;
+    if (tr.hidden && type) { setFilter('t' + type); tr = body.querySelector('tr.ex-row[data-ex="' + idx + '"]'); }
+    if (!tr || tr.hidden) return;
+    body.querySelectorAll('tr.ex-row').forEach(function (x) { x.classList.remove('open'); });
+    body.querySelectorAll('tr.ex-det').forEach(function (x) { x.hidden = true; });
+    tr.classList.add('open');
+    if (tr.nextElementSibling) tr.nextElementSibling.hidden = false;
+    if (tr.scrollIntoView) tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   document.querySelectorAll('[data-exf]').forEach(function (b) {
     b.addEventListener('click', function () {
